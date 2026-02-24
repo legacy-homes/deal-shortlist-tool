@@ -324,7 +324,8 @@
                     "rightmove_url": {
                         "type": "string",
                         "title": "Rightmove Url",
-                        "description": "Full Rightmove search URL"
+                        "description": "Full Rightmove search URL",
+                        "default": "https://www.rightmove.co.uk/property-for-sale/find.html?searchLocation=CV10+0NB&useLocationIdentifier=true&locationIdentifier=POSTCODE%5E196715&buy=For+sale&radius=10.0&_includeSSTC=on&propertyTypes=semi-detached%2Cterraced&sortType=1&channel=BUY&transactionType=BUY&displayLocationIdentifier=undefined&tenureTypes=FREEHOLD&dontShow=retirement%2CnewHome%2CsharedOwnership"
                     },
                     "price_difference_threshold": {
                         "type": "integer",
@@ -342,7 +343,8 @@
                             }
                         ],
                         "title": "Max Properties",
-                        "description": "Max properties to process (None = all on page)"
+                        "description": "Max properties to process (None = all on page)",
+                        "default": 30
                     },
                     "include_featured": {
                         "type": "boolean",
@@ -367,14 +369,19 @@
                         "type": "integer",
                         "title": "Min Properties For Median",
                         "description": "Min properties for median calculation",
-                        "default": 5
+                        "default": 4
                     }
                 },
                 "type": "object",
-                "required": [
-                    "rightmove_url"
-                ],
-                "title": "FindDealsRequest"
+                "title": "FindDealsRequest",
+                "example": {
+                    "include_featured": false,
+                    "max_properties": 30,
+                    "min_properties_for_median": 4,
+                    "price_difference_threshold": 50000,
+                    "rightmove_url": "https://www.rightmove.co.uk/property-for-sale/find.html?searchLocation=CV10+0NB&useLocationIdentifier=true&locationIdentifier=POSTCODE%5E196715&buy=For+sale&radius=10.0&_includeSSTC=on&propertyTypes=semi-detached%2Cterraced&sortType=1&channel=BUY&transactionType=BUY&displayLocationIdentifier=undefined&tenureTypes=FREEHOLD&dontShow=retirement%2CnewHome%2CsharedOwnership",
+                    "tenure": "FREEHOLD"
+                }
             },
             "GetMedianPropertiesRequest": {
                 "properties": {

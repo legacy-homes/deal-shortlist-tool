@@ -137,12 +137,27 @@ class GetMedianPropertiesRequest(BaseModel):
     min_properties: int = Field(10, description="Minimum target property count for reliable median")
 
 class FindDealsRequest(BaseModel):
-    rightmove_url: str = Field(..., description="Full Rightmove search URL")
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "rightmove_url": "https://www.rightmove.co.uk/property-for-sale/find.html?searchLocation=CV10+0NB&useLocationIdentifier=true&locationIdentifier=POSTCODE%5E196715&buy=For+sale&radius=10.0&_includeSSTC=on&propertyTypes=semi-detached%2Cterraced&sortType=1&channel=BUY&transactionType=BUY&displayLocationIdentifier=undefined&tenureTypes=FREEHOLD&dontShow=retirement%2CnewHome%2CsharedOwnership",
+                "price_difference_threshold": 50000,
+                "max_properties": 30,
+                "include_featured": False,
+                "tenure": "FREEHOLD",
+                "min_properties_for_median": 4
+            }
+        }
+    }
+    rightmove_url: str = Field(
+        "https://www.rightmove.co.uk/property-for-sale/find.html?searchLocation=CV10+0NB&useLocationIdentifier=true&locationIdentifier=POSTCODE%5E196715&buy=For+sale&radius=10.0&_includeSSTC=on&propertyTypes=semi-detached%2Cterraced&sortType=1&channel=BUY&transactionType=BUY&displayLocationIdentifier=undefined&tenureTypes=FREEHOLD&dontShow=retirement%2CnewHome%2CsharedOwnership",
+        description="Full Rightmove search URL"
+    )
     price_difference_threshold: int = Field(50000, description="Minimum £ below median to qualify as a deal")
-    max_properties: Optional[int] = Field(None, description="Max properties to process (None = all on page)")
+    max_properties: Optional[int] = Field(30, description="Max properties to process (None = all on page)")
     include_featured: bool = Field(False, description="Include featured listings")
     tenure: Optional[str] = Field("FREEHOLD", description="Tenure filter for median calculation")
-    min_properties_for_median: int = Field(5, description="Min properties for median calculation")
+    min_properties_for_median: int = Field(4, description="Min properties for median calculation")
 
 # ============================================================================
 # HELPERS
