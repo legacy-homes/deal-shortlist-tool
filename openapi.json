@@ -1,0 +1,527 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "DealFinder API",
+        "description": "REST API for Rightmove property analysis tools (PropertyDealFinder + MedianPriceCalculator)",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "Info"
+                ],
+                "summary": "Root",
+                "description": "API root - returns info and available endpoints.",
+                "operationId": "root__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "tags": [
+                    "Info"
+                ],
+                "summary": "Health",
+                "description": "Health check endpoint.",
+                "operationId": "health_health_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/parser/info": {
+            "get": {
+                "tags": [
+                    "Parser"
+                ],
+                "summary": "Parser Info",
+                "description": "Get current parser version and structure support info.",
+                "operationId": "parser_info_parser_info_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/search_properties": {
+            "post": {
+                "tags": [
+                    "Properties"
+                ],
+                "summary": "Search Properties",
+                "description": "Search active Rightmove listings.\n\nConstructs a Rightmove search URL from the given parameters, fetches the page,\nand returns parsed property listings using the shared rightmove_parsers module.",
+                "operationId": "search_properties_api_search_properties_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SearchPropertiesRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/calculate_median": {
+            "post": {
+                "tags": [
+                    "Median Price"
+                ],
+                "summary": "Calculate Median",
+                "description": "Calculate the median sold price for a given postcode, property type, and bedroom count.\n\nUses a progressive search strategy:\n1. Starts with 'this area only' within last 2 years\n2. Expands radius: 0.25 \u2192 0.5 \u2192 1.0 miles if not enough data\n3. Expands time to 3 years if still insufficient",
+                "operationId": "calculate_median_api_calculate_median_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CalculateMedianRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/get_median_properties": {
+            "post": {
+                "tags": [
+                    "Median Price"
+                ],
+                "summary": "Get Median Properties",
+                "description": "Get the full list of sold properties used in the median price calculation.\n\nRuns the same progressive search strategy as /api/calculate_median but returns\nthe complete list of individual sold properties that matched the criteria, along\nwith the median price and search parameters used.\n\nEach property in the list includes: address, postcode, property type, bedrooms,\nsold date, sold price, tenure, and a link to the Rightmove listing.\n\nUses the same progressive search strategy:\n1. Starts with 'this area only' within last 2 years\n2. Expands radius: 0.25 \u2192 0.5 \u2192 1.0 miles if not enough data\n3. Expands time to 3 years if still insufficient",
+                "operationId": "get_median_properties_api_get_median_properties_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GetMedianPropertiesRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/find_deals": {
+            "post": {
+                "tags": [
+                    "Deal Finder"
+                ],
+                "summary": "Find Deals",
+                "description": "Find potentially undervalued properties on Rightmove.\n\nFetches active listings from the given Rightmove URL, then for each property\ncalculates the local median sold price and identifies deals where the asking\nprice is significantly below the median.\n\nNote: This endpoint makes multiple requests to Rightmove and may take 1-3 minutes.",
+                "operationId": "find_deals_api_find_deals_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FindDealsRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/parser/test": {
+            "post": {
+                "tags": [
+                    "Parser"
+                ],
+                "summary": "Run Parser Tests",
+                "description": "Run the parser test suite (as defined in MANUS_TEST_PARSING.md).\n\nExecutes the test_parsing.py test suite against stored test data and returns\na structured report of pass/fail results. Use this to verify the parser is\nworking correctly after a fix or to detect Rightmove structure changes.",
+                "operationId": "run_parser_tests_api_parser_test_post",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/parser/fix": {
+            "post": {
+                "tags": [
+                    "Parser"
+                ],
+                "summary": "Fix Parser",
+                "description": "Trigger the parser fix workflow (as defined in MANUS_FIX_PARSING.md).\n\nThis endpoint:\n1. Fetches fresh HTML from Rightmove (active + sold listings)\n2. Analyses the current structure\n3. Tests the existing parser against fresh HTML\n4. If the sold listing parser has link issues, applies the fix\n5. Updates the version and last-verified date\n6. Uploads the fixed parser to Google Drive (both RightmoveParsingModule and IntegratedTools_v2)\n7. Reloads the parser in memory so all endpoints immediately use the new version\n8. Runs the test suite to verify the fix\n9. Returns a detailed report\n\nNote: This endpoint makes live requests to Rightmove and may take 30-60 seconds.",
+                "operationId": "fix_parser_api_parser_fix_post",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CalculateMedianRequest": {
+                "properties": {
+                    "postcode": {
+                        "type": "string",
+                        "title": "Postcode",
+                        "description": "UK postcode, e.g. 'CV10 0NB'",
+                        "default": "CV10 0NB"
+                    },
+                    "property_type": {
+                        "type": "string",
+                        "title": "Property Type",
+                        "description": "Property type, e.g. 'Semi-Detached', 'Terraced'",
+                        "default": "Terraced"
+                    },
+                    "bedrooms": {
+                        "type": "integer",
+                        "title": "Bedrooms",
+                        "description": "Number of bedrooms",
+                        "default": 3
+                    },
+                    "tenure": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Tenure",
+                        "description": "Tenure: FREEHOLD, LEASEHOLD, or ANY for both",
+                        "default": "FREEHOLD"
+                    },
+                    "min_properties": {
+                        "type": "integer",
+                        "title": "Min Properties",
+                        "description": "Minimum target property count for reliable median",
+                        "default": 10
+                    }
+                },
+                "type": "object",
+                "title": "CalculateMedianRequest",
+                "example": {
+                    "bedrooms": 3,
+                    "min_properties": 10,
+                    "postcode": "CV10 0NB",
+                    "property_type": "Terraced",
+                    "tenure": "FREEHOLD"
+                }
+            },
+            "FindDealsRequest": {
+                "properties": {
+                    "rightmove_url": {
+                        "type": "string",
+                        "title": "Rightmove Url",
+                        "description": "Full Rightmove search URL"
+                    },
+                    "price_difference_threshold": {
+                        "type": "integer",
+                        "title": "Price Difference Threshold",
+                        "description": "Minimum \u00a3 below median to qualify as a deal",
+                        "default": 50000
+                    },
+                    "max_properties": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Max Properties",
+                        "description": "Max properties to process (None = all on page)"
+                    },
+                    "include_featured": {
+                        "type": "boolean",
+                        "title": "Include Featured",
+                        "description": "Include featured listings",
+                        "default": false
+                    },
+                    "tenure": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Tenure",
+                        "description": "Tenure filter for median calculation",
+                        "default": "FREEHOLD"
+                    },
+                    "min_properties_for_median": {
+                        "type": "integer",
+                        "title": "Min Properties For Median",
+                        "description": "Min properties for median calculation",
+                        "default": 5
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "rightmove_url"
+                ],
+                "title": "FindDealsRequest"
+            },
+            "GetMedianPropertiesRequest": {
+                "properties": {
+                    "postcode": {
+                        "type": "string",
+                        "title": "Postcode",
+                        "description": "UK postcode, e.g. 'CV10 0NB'",
+                        "default": "CV10 0NB"
+                    },
+                    "property_type": {
+                        "type": "string",
+                        "title": "Property Type",
+                        "description": "Property type, e.g. 'Semi-Detached', 'Terraced'",
+                        "default": "Terraced"
+                    },
+                    "bedrooms": {
+                        "type": "integer",
+                        "title": "Bedrooms",
+                        "description": "Number of bedrooms",
+                        "default": 3
+                    },
+                    "tenure": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Tenure",
+                        "description": "Tenure: FREEHOLD, LEASEHOLD, or ANY for both",
+                        "default": "FREEHOLD"
+                    },
+                    "min_properties": {
+                        "type": "integer",
+                        "title": "Min Properties",
+                        "description": "Minimum target property count for reliable median",
+                        "default": 10
+                    }
+                },
+                "type": "object",
+                "title": "GetMedianPropertiesRequest",
+                "example": {
+                    "bedrooms": 3,
+                    "min_properties": 10,
+                    "postcode": "CV10 0NB",
+                    "property_type": "Terraced",
+                    "tenure": "FREEHOLD"
+                }
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "SearchPropertiesRequest": {
+                "properties": {
+                    "locationIdentifier": {
+                        "type": "string",
+                        "title": "Locationidentifier",
+                        "description": "Rightmove location identifier, e.g. 'REGION%5E904'"
+                    },
+                    "maxPrice": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Maxprice",
+                        "description": "Maximum price filter (\u00a3)"
+                    },
+                    "propertyTypes": {
+                        "type": "string",
+                        "title": "Propertytypes",
+                        "description": "Property type(s), e.g. 'semi-detached'"
+                    },
+                    "sortType": {
+                        "type": "integer",
+                        "title": "Sorttype",
+                        "description": "Sort type (1=Highest price, 2=Lowest price, 6=Newest listed)",
+                        "default": 1
+                    },
+                    "index": {
+                        "type": "integer",
+                        "title": "Index",
+                        "description": "Pagination index (0, 24, 48, ...)",
+                        "default": 0
+                    },
+                    "includeFeatured": {
+                        "type": "boolean",
+                        "title": "Includefeatured",
+                        "description": "Include featured/promoted listings",
+                        "default": false
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "locationIdentifier",
+                    "propertyTypes"
+                ],
+                "title": "SearchPropertiesRequest"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            }
+        }
+    }
+}
