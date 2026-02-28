@@ -190,56 +190,6 @@ def normalize_property_type(property_type):
     return mappings.get(normalized, normalized)
 
 
-def _parse_sold_date(sold_date_str):
-    """Parse a sold date string into a datetime. Returns None if unparseable."""
-    if not sold_date_str:
-        return None
-    for fmt in ('%d %b %Y', '%d %B %Y', '%b %Y', '%B %Y'):
-        try:
-            return datetime.strptime(sold_date_str.strip(), fmt)
-        except ValueError:
-            continue
-    return None
-
-
-def _compute_relevance_score(radius_miles, sold_in_years, sold_date_str):
-    """
-    Compute a relevance score (0-100) for a comparable property.
-
-    Scoring rationale:
-    - A comparable sold yesterday within the same postcode area (radius=0)
-      is maximally relevant (100).
-    - Relevance decreases linearly with search radius (max penalty 40 pts
-      across 0 → 1 mile) and with age (max penalty 40 pts across 0 → 3 years).
-    - An additional 20 pts are awarded for being within the tightest time
-      window (sold_in_years == 2), reflecting the preference for recent data.
-
-    Formula:
-        radius_penalty  = min(radius_miles / 1.0, 1.0) * 40
-        age_penalty     = min(actual_age_years / sold_in_years, 1.0) * 40
-        recency_bonus   = 20 if sold_in_years == 2 else 0
-        score           = 100 - radius_penalty - age_penalty + recency_bonus
-        (clamped to [0, 100])
-    """
-    # Radius penalty: 0 miles → 0 pts, 1 mile → 40 pts
-    radius_penalty = min(radius_miles / 1.0, 1.0) * 40
-
-    # Age penalty based on actual sold date vs the window used
-    sold_dt = _parse_sold_date(sold_date_str)
-    if sold_dt:
-        age_years = (datetime.now() - sold_dt).days / 365.25
-        # Normalise against the window that was used to fetch this comparable
-        age_penalty = min(age_years / max(sold_in_years, 1), 1.0) * 40
-    else:
-        # Unknown date — assume worst case within the window
-        age_penalty = 40
-
-    # Recency bonus: data fetched within the tighter 2-year window is preferred
-    recency_bonus = 20 if sold_in_years <= 2 else 0
-
-    score = 100 - radius_penalty - age_penalty + recency_bonus
-    return round(max(0.0, min(100.0, score)), 1)
-
 
 def filter_and_calculate_median(all_properties, property_type, bedrooms, search_params=None):
     """
@@ -313,9 +263,6 @@ def filter_and_calculate_median(all_properties, property_type, bedrooms, search_
             # Tag with search context
             prop_copy['search_radius_miles'] = radius_miles
             prop_copy['sold_within_years'] = sold_in_years
-            prop_copy['relevance_score'] = _compute_relevance_score(
-                radius_miles, sold_in_years, prop.get('sold_date', '')
-            )
             matching_properties.append(prop_copy)
 
     # Calculate median
