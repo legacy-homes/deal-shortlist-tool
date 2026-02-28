@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useMutation, useQueries } from "@tanstack/react-query";
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import { Search, Save, ExternalLink, ArrowRightCircle, Loader2, CheckCircle2 } from "lucide-react";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
@@ -10,7 +10,7 @@ import { Badge } from "../components/Badge";
 import { Dialog } from "../components/Dialog";
 import { Card, CardHeader, CardContent } from "../components/Card";
 import { findDeals, getComparables } from "../api/dealfinderApi";
-import { useSavedSearches, usePipelineDeals, newId } from "../store/storage";
+import { useSavedSearches, usePipelineDeals, newId, saveComparable, loadComparable, comparableCacheKey } from "../store/storage";
 import type { FindDealsParams, DealProperty } from "../types";
 
 const DEFAULT_PARAMS: FindDealsParams = {
@@ -29,6 +29,7 @@ export function SearchPage() {
 
   const { addSearch, getSearch } = useSavedSearches();
   const { addDeal } = usePipelineDeals();
+  const queryClient = useQueryClient();
 
   // ── Form state ──────────────────────────────────────────────────────────────
   const [params, setParams] = useState<FindDealsParams>(DEFAULT_PARAMS);
@@ -62,6 +63,23 @@ export function SearchPage() {
   const results = mutation.data ?? savedSearch?.results;
   const deals = results?.deals ?? [];
 
+  // ── Seed TanStack Query cache from localStorage before queries fire ────────
+  // This runs synchronously during render so useQueries below finds the data
+  // already in cache and skips the network call entirely.
+  useMemo(() => {
+    deals.forEach((deal) => {
+      const key = comparableCacheKey(deal.postcode, deal.property_type, deal.bedrooms, params.tenure);
+      const persisted = loadComparable(key);
+      if (persisted) {
+        queryClient.setQueryData(
+          ["comparables", deal.postcode, deal.property_type, deal.bedrooms, params.tenure],
+          persisted
+        );
+      }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deals.length, params.tenure]);
+
   // ── Background-prefetch comparables for every deal ────────────────────────
   // Uses the same query keys as ComparablesPage so the cache is shared.
   // By the time the user clicks "View", data is already there.
@@ -74,6 +92,18 @@ export function SearchPage() {
       enabled: deals.length > 0,
     })),
   });
+
+  // ── Persist comparables to localStorage whenever a query succeeds ─────────
+  useEffect(() => {
+    deals.forEach((deal, i) => {
+      const q = comparableQueries[i];
+      if (q?.isSuccess && q.data) {
+        const key = comparableCacheKey(deal.postcode, deal.property_type, deal.bedrooms, params.tenure);
+        saveComparable(key, q.data);
+      }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [comparableQueries.map((q) => q.isSuccess).join(",")]);
 
   // Map "postcode|type|beds" → query state for use in the table column
   const comparableStatus = new Map(

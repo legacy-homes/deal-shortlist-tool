@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { SavedSearch, PipelineDeal } from "../types";
+import type { SavedSearch, PipelineDeal, GetMedianPropertiesResponse } from "../types";
 
 const SAVED_SEARCHES_KEY = "dealfinder_saved_searches";
 const PIPELINE_KEY = "dealfinder_pipeline";
@@ -86,4 +86,48 @@ export function usePipelineDeals() {
 // ─── Simple UUID helper ───────────────────────────────────────────────────────
 export function newId(): string {
   return crypto.randomUUID();
+}
+
+// ─── Comparables Cache ────────────────────────────────────────────────────────
+// Keyed by "postcode|type|beds|tenure" — shared across all saved searches.
+
+const COMPARABLES_CACHE_KEY = "dealfinder_comparables_cache";
+
+type ComparablesStore = Record<string, GetMedianPropertiesResponse>;
+
+function loadComparablesStore(): ComparablesStore {
+  try {
+    const raw = localStorage.getItem(COMPARABLES_CACHE_KEY);
+    return raw ? (JSON.parse(raw) as ComparablesStore) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function comparableCacheKey(
+  postcode: string,
+  type: string,
+  beds: number,
+  tenure: string
+): string {
+  return `${postcode}|${type}|${beds}|${tenure}`;
+}
+
+export function saveComparable(
+  key: string,
+  data: GetMedianPropertiesResponse
+): void {
+  const store = loadComparablesStore();
+  store[key] = data;
+  localStorage.setItem(COMPARABLES_CACHE_KEY, JSON.stringify(store));
+}
+
+export function loadComparable(
+  key: string
+): GetMedianPropertiesResponse | undefined {
+  return loadComparablesStore()[key];
+}
+
+export function loadAllComparables(): ComparablesStore {
+  return loadComparablesStore();
 }

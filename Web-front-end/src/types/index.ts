@@ -48,10 +48,10 @@ export interface ComparableProperty {
 
 export interface GetMedianPropertiesResponse {
   status: string;
-  median_price: number;
-  property_count: number;
-  search_params: { label: string };
-  properties: ComparableProperty[];
+  median_price: number | null;
+  property_count: number | null;
+  search_params: { label: string } | null;
+  properties: ComparableProperty[] | null;
 }
 
 // ─── App State Types ──────────────────────────────────────────────────────────

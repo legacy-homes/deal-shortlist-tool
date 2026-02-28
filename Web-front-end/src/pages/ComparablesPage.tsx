@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
@@ -23,7 +23,6 @@ export function ComparablesPage() {
 
   // Default all comparables as qualified (checked)
   const [qualified, setQualified] = useState<Set<number>>(new Set());
-  const [initialized, setInitialized] = useState(false);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["comparables", postcode, type, beds, tenure],
@@ -32,11 +31,12 @@ export function ComparablesPage() {
     staleTime: 5 * 60 * 1000,
   });
 
-  // When data first loads, default all rows to qualified
-  if (data && !initialized) {
-    setQualified(new Set(data.properties.map((_, i) => i)));
-    setInitialized(true);
-  }
+  // When data loads (including instantly from cache), default all rows to qualified
+  useEffect(() => {
+    if (data) {
+      setQualified(new Set((data.properties ?? []).map((_, i) => i)));
+    }
+  }, [data]);
 
   function toggleQualified(idx: number) {
     setQualified((prev) => {
@@ -99,7 +99,7 @@ export function ComparablesPage() {
     {
       header: "Qualify Comparable",
       cell: (_row: ComparableProperty) => {
-        const idx = data?.properties.indexOf(_row) ?? -1;
+        const idx = data?.properties?.indexOf(_row) ?? -1;
         return (
           <input
             type="checkbox"
@@ -150,17 +150,25 @@ export function ComparablesPage() {
             <CardHeader>
               <div className="flex items-center gap-4">
                 <span className="font-semibold text-gray-800">Median Price</span>
-                <Badge variant="blue">£{data.median_price.toLocaleString()}</Badge>
-                <span className="text-sm text-gray-500">
-                  from {data.property_count} comparable{data.property_count !== 1 ? "s" : ""}
-                </span>
-                <span className="text-sm text-gray-400">· {data.search_params.label}</span>
+                {data.median_price != null ? (
+                  <Badge variant="blue">£{data.median_price.toLocaleString()}</Badge>
+                ) : (
+                  <Badge variant="gray">Not enough data</Badge>
+                )}
+                {data.property_count != null && (
+                  <span className="text-sm text-gray-500">
+                    from {data.property_count} comparable{data.property_count !== 1 ? "s" : ""}
+                  </span>
+                )}
+                {data.search_params != null && (
+                  <span className="text-sm text-gray-400">· {data.search_params.label}</span>
+                )}
               </div>
             </CardHeader>
             <CardContent>
               <Table
                 columns={columns}
-                data={data.properties}
+                data={data.properties ?? []}
                 emptyMessage="No comparable sales found."
               />
             </CardContent>
