@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { SavedSearch, PipelineDeal, GetMedianPropertiesResponse } from "../types";
+import type { SavedSearch, PipelineDeal, ComparablesCacheEntry } from "../types";
 
 const SAVED_SEARCHES_KEY = "dealfinder_saved_searches";
 const PIPELINE_KEY = "dealfinder_pipeline";
@@ -93,7 +93,7 @@ export function newId(): string {
 
 const COMPARABLES_CACHE_KEY = "dealfinder_comparables_cache";
 
-type ComparablesStore = Record<string, GetMedianPropertiesResponse>;
+type ComparablesStore = Record<string, ComparablesCacheEntry>;
 
 function loadComparablesStore(): ComparablesStore {
   try {
@@ -115,7 +115,7 @@ export function comparableCacheKey(
 
 export function saveComparable(
   key: string,
-  data: GetMedianPropertiesResponse
+  data: ComparablesCacheEntry
 ): void {
   const store = loadComparablesStore();
   store[key] = data;
@@ -124,10 +124,21 @@ export function saveComparable(
 
 export function loadComparable(
   key: string
-): GetMedianPropertiesResponse | undefined {
+): ComparablesCacheEntry | undefined {
   return loadComparablesStore()[key];
 }
 
 export function loadAllComparables(): ComparablesStore {
   return loadComparablesStore();
+}
+
+// ─── Median calculation ───────────────────────────────────────────────────────
+// Used by ComparablesPage and SearchPage to compute median from qualified rows.
+export function calcMedian(prices: number[]): number | null {
+  if (prices.length === 0) return null;
+  const sorted = [...prices].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
+    : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
-import { Search, Save, ExternalLink, ArrowRightCircle, Loader2, CheckCircle2 } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Search, Save, ArrowRightCircle, Loader2, CheckCircle2, ExternalLink } from "lucide-react";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { Select } from "../components/Select";
@@ -9,9 +9,10 @@ import { Table } from "../components/Table";
 import { Badge } from "../components/Badge";
 import { Dialog } from "../components/Dialog";
 import { Card, CardHeader, CardContent } from "../components/Card";
-import { findDeals, getComparables } from "../api/dealfinderApi";
+import { findDeals } from "../api/dealfinderApi";
 import { useSavedSearches, usePipelineDeals, newId, saveComparable, loadComparable, comparableCacheKey } from "../store/storage";
-import type { FindDealsParams, DealProperty } from "../types";
+import { calcMedian } from "../store/storage";
+import type { FindDealsParams, DealProperty, ComparablesCacheEntry } from "../types";
 
 const DEFAULT_PARAMS: FindDealsParams = {
   rightmove_url: "",
@@ -63,54 +64,57 @@ export function SearchPage() {
   const results = mutation.data ?? savedSearch?.results;
   const deals = results?.deals ?? [];
 
-  // ── Seed TanStack Query cache from localStorage before queries fire ────────
-  // This runs synchronously during render so useQueries below finds the data
-  // already in cache and skips the network call entirely.
+  // ── Seed TQ cache + localStorage from comparable_properties in deal data ──
+  // Preserves any qualification state the user has already set.
   useMemo(() => {
     deals.forEach((deal) => {
-      const key = comparableCacheKey(deal.postcode, deal.property_type, deal.bedrooms, params.tenure);
-      const persisted = loadComparable(key);
-      if (persisted) {
-        queryClient.setQueryData(
-          ["comparables", deal.postcode, deal.property_type, deal.bedrooms, params.tenure],
-          persisted
-        );
+      const cacheKey = comparableCacheKey(
+        deal.postcode,
+        deal.property_type,
+        deal.bedrooms,
+        params.tenure
+      );
+      const tqKey = ["comparables", deal.postcode, deal.property_type, deal.bedrooms, params.tenure];
+      const hasEmbedded = (deal.comparable_properties?.length ?? 0) > 0;
+
+      if (hasEmbedded) {
+        // Preserve existing qualification choices made by the user
+        const existing = loadComparable(cacheKey);
+        const payload: ComparablesCacheEntry = {
+          status: "success",
+          median_price: deal.median_price ?? null,
+          property_count: deal.sample_size ?? null,
+          search_params: deal.median_search_params ?? null,
+          properties: deal.comparable_properties ?? null,
+          qualifiedIds: existing?.qualifiedIds ?? null,
+          qualifiedMedian: existing?.qualifiedMedian ?? null,
+        };
+        queryClient.setQueryData(tqKey, payload);
+        saveComparable(cacheKey, payload);
+      } else {
+        const persisted = loadComparable(cacheKey);
+        if (persisted) queryClient.setQueryData(tqKey, persisted);
       }
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deals.length, params.tenure]);
 
-  // ── Background-prefetch comparables for every deal ────────────────────────
-  // Uses the same query keys as ComparablesPage so the cache is shared.
-  // By the time the user clicks "View", data is already there.
-  const comparableQueries = useQueries({
-    queries: deals.map((deal) => ({
-      queryKey: ["comparables", deal.postcode, deal.property_type, deal.bedrooms, params.tenure],
-      queryFn: () =>
-        getComparables(deal.postcode, deal.property_type, deal.bedrooms, params.tenure),
-      staleTime: 5 * 60 * 1000,
-      enabled: deals.length > 0,
-    })),
-  });
-
-  // ── Persist comparables to localStorage whenever a query succeeds ─────────
-  useEffect(() => {
-    deals.forEach((deal, i) => {
-      const q = comparableQueries[i];
-      if (q?.isSuccess && q.data) {
-        const key = comparableCacheKey(deal.postcode, deal.property_type, deal.bedrooms, params.tenure);
-        saveComparable(key, q.data);
-      }
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [comparableQueries.map((q) => q.isSuccess).join(",")]);
-
-  // Map "postcode|type|beds" → query state for use in the table column
-  const comparableStatus = new Map(
-    deals.map((deal, i) => [
-      `${deal.postcode}|${deal.property_type}|${deal.bedrooms}`,
-      comparableQueries[i],
-    ])
+  // ── Track which deals have comparables ready for the button indicator ─────
+  const comparableReadySet = useMemo(
+    () =>
+      new Set(
+        deals
+          .filter(
+            (d) =>
+              (d.comparable_properties?.length ?? 0) > 0 ||
+              !!loadComparable(
+                comparableCacheKey(d.postcode, d.property_type, d.bedrooms, params.tenure)
+              )
+          )
+          .map((d) => `${d.postcode}|${d.property_type}|${d.bedrooms}`)
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [deals.length, params.tenure]
   );
 
   // ── Handlers ─────────────────────────────────────────────────────────────────
@@ -188,13 +192,38 @@ export function SearchPage() {
     },
     {
       header: "Median Price",
-      cell: (row: DealProperty) => `£${row.median_price.toLocaleString()}`,
+      cell: (row: DealProperty) => {
+        const key = comparableCacheKey(row.postcode, row.property_type, row.bedrooms, params.tenure);
+        const cached = loadComparable(key);
+        const isAdjusted = cached?.qualifiedIds != null;
+        const displayMedian = (isAdjusted ? cached?.qualifiedMedian : null) ?? row.median_price;
+        return (
+          <div className="flex flex-col gap-0.5">
+            <span className="font-medium">
+              {displayMedian != null ? `£${displayMedian.toLocaleString()}` : "—"}
+            </span>
+            {isAdjusted && (
+              <span className="text-xs text-amber-600 font-medium">adjusted</span>
+            )}
+          </div>
+        );
+      },
     },
     {
       header: "Difference",
-      cell: (row: DealProperty) => (
-        <Badge variant="green">£{row.difference.toLocaleString()} below</Badge>
-      ),
+      cell: (row: DealProperty) => {
+        const key = comparableCacheKey(row.postcode, row.property_type, row.bedrooms, params.tenure);
+        const cached = loadComparable(key);
+        const isAdjusted = cached?.qualifiedIds != null;
+        const effectiveMedian = (isAdjusted ? cached?.qualifiedMedian : null) ?? row.median_price;
+        const diff = effectiveMedian != null ? effectiveMedian - row.asking_price : row.difference;
+        if (diff == null) return <span className="text-gray-400 text-xs">—</span>;
+        return diff >= 0 ? (
+          <Badge variant="green">£{diff.toLocaleString()} below</Badge>
+        ) : (
+          <Badge variant="red">£{Math.abs(diff).toLocaleString()} above</Badge>
+        );
+      },
     },
     {
       header: "Sample Size",
@@ -218,9 +247,7 @@ export function SearchPage() {
       header: "Comparables",
       cell: (row: DealProperty) => {
         const key = `${row.postcode}|${row.property_type}|${row.bedrooms}`;
-        const q = comparableStatus.get(key);
-        const isFetching = q?.isFetching ?? false;
-        const isReady = q?.isSuccess ?? false;
+        const isReady = comparableReadySet.has(key);
         return (
           <Button
             size="sm"
@@ -232,9 +259,7 @@ export function SearchPage() {
             }
             className="text-xs gap-1"
           >
-            {isFetching ? (
-              <Loader2 size={12} className="animate-spin text-gray-400" />
-            ) : isReady ? (
+            {isReady ? (
               <CheckCircle2 size={12} className="text-green-500" />
             ) : (
               <ExternalLink size={12} />

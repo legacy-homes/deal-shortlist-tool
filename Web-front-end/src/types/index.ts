@@ -17,11 +17,13 @@ export interface DealProperty {
   property_type: string;
   bedrooms: number;
   asking_price: number;
-  median_price: number;
-  difference: number;
-  sample_size: number;
+  median_price: number | null;
+  difference: number | null;
+  sample_size: number | null;
   link: string;
-  comparables_postcode: string; // postcode used to fetch comparables
+  comparables_postcode: string;
+  median_search_params: { label: string } | null;
+  comparable_properties: ComparableProperty[] | null;
   is_deal: boolean;
 }
 
@@ -52,6 +54,12 @@ export interface GetMedianPropertiesResponse {
   property_count: number | null;
   search_params: { label: string } | null;
   properties: ComparableProperty[] | null;
+}
+
+// Extends the API response with persisted user qualification state
+export interface ComparablesCacheEntry extends GetMedianPropertiesResponse {
+  qualifiedIds: string[] | null;  // null = all qualified (default)
+  qualifiedMedian: number | null; // recalculated from qualified comparables only
 }
 
 // ─── App State Types ──────────────────────────────────────────────────────────
