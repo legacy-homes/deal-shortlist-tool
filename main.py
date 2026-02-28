@@ -459,14 +459,33 @@ async def find_deals(req: FindDealsRequest):
             except Exception:
                 median_result = None
 
-            # Build comparable properties list from median result
+            # Build comparable properties list from median result, enriched with floor area
             comparables = []
             if median_result:
                 for c in median_result.get('properties', []):
                     c_out = c.copy()
                     if 'price' in c_out and 'sold_price' not in c_out:
                         c_out['sold_price'] = c_out['price']
+                    # Fetch floor area for each comparable
+                    try:
+                        fa = find_floor_area_for_address(c_out.get('address', ''))
+                        c_out['floor_area'] = fa.get('floor_area') if fa.get('availability') == 'Available' else None
+                        c_out['floor_area_availability'] = fa.get('availability')
+                        time.sleep(0.5)  # polite delay for EPC requests
+                    except Exception:
+                        c_out['floor_area'] = None
+                        c_out['floor_area_availability'] = 'NotAvailable'
                     comparables.append(c_out)
+
+            # Fetch floor area for the deal property itself
+            try:
+                prop_fa = find_floor_area_for_address(prop.get('address', ''))
+                prop_floor_area = prop_fa.get('floor_area') if prop_fa.get('availability') == 'Available' else None
+                prop_floor_area_availability = prop_fa.get('availability')
+                time.sleep(0.5)
+            except Exception:
+                prop_floor_area = None
+                prop_floor_area_availability = 'NotAvailable'
 
             prop_result = {
                 "id": prop['id'],
@@ -476,6 +495,8 @@ async def find_deals(req: FindDealsRequest):
                 "bedrooms": prop['bedrooms'],
                 "asking_price": prop['price'],
                 "link": prop['link'],
+                "floor_area": prop_floor_area,
+                "floor_area_availability": prop_floor_area_availability,
                 "median_price": None,
                 "difference": None,
                 "sample_size": None,
