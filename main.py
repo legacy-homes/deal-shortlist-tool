@@ -434,6 +434,15 @@ async def find_deals(req: FindDealsRequest):
             except Exception:
                 median_result = None
 
+            # Build comparable properties list from median result
+            comparables = []
+            if median_result:
+                for c in median_result.get('properties', []):
+                    c_out = c.copy()
+                    if 'price' in c_out and 'sold_price' not in c_out:
+                        c_out['sold_price'] = c_out['price']
+                    comparables.append(c_out)
+
             prop_result = {
                 "id": prop['id'],
                 "address": prop['address'],
@@ -445,7 +454,9 @@ async def find_deals(req: FindDealsRequest):
                 "median_price": None,
                 "difference": None,
                 "sample_size": None,
-                "is_deal": False
+                "median_search_params": None,
+                "is_deal": False,
+                "comparable_properties": comparables
             }
 
             if median_result and median_result.get('median_price'):
@@ -455,6 +466,7 @@ async def find_deals(req: FindDealsRequest):
                     "median_price": median_price,
                     "difference": difference,
                     "sample_size": median_result.get('property_count'),
+                    "median_search_params": median_result.get('search_params'),
                     "is_deal": difference >= req.price_difference_threshold
                 })
                 if prop_result['is_deal']:
