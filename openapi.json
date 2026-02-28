@@ -226,6 +226,46 @@
                 }
             }
         },
+        "/api/extract_floor_area": {
+            "post": {
+                "tags": [
+                    "Floor Area"
+                ],
+                "summary": "Extract Floor Area",
+                "description": "Extract total floor area (sq m) for a UK property address from the\ngovernment EPC (Energy Performance Certificate) database.\n\nThe tool:\n1. Extracts the postcode from the supplied address.\n2. Searches the EPC register for all certificates at that postcode.\n3. Finds the best-matching certificate using address similarity.\n4. Scrapes the floor area from the certificate page.\n\nReturns `availability: \"Available\"` with `floor_area` in sq m when found,\nor `availability: \"NotAvailable\"` with a reason when not.\n\nNote: Makes live requests to find-energy-certificate.service.gov.uk.",
+                "operationId": "extract_floor_area_api_extract_floor_area_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FloorAreaRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/parser/test": {
             "post": {
                 "tags": [
@@ -381,6 +421,30 @@
                     "price_difference_threshold": 50000,
                     "rightmove_url": "https://www.rightmove.co.uk/property-for-sale/find.html?searchLocation=CV10+0NB&useLocationIdentifier=true&locationIdentifier=POSTCODE%5E196715&buy=For+sale&radius=10.0&_includeSSTC=on&propertyTypes=semi-detached%2Cterraced&sortType=1&channel=BUY&transactionType=BUY&displayLocationIdentifier=undefined&tenureTypes=FREEHOLD&dontShow=retirement%2CnewHome%2CsharedOwnership",
                     "tenure": "FREEHOLD"
+                }
+            },
+            "FloorAreaRequest": {
+                "properties": {
+                    "address": {
+                        "type": "string",
+                        "title": "Address",
+                        "description": "Full UK property address including postcode",
+                        "default": "74, Dukes Road, Tamworth, B78 1PW"
+                    },
+                    "match_threshold": {
+                        "type": "number",
+                        "maximum": 1.0,
+                        "minimum": 0.0,
+                        "title": "Match Threshold",
+                        "description": "Minimum address similarity score (0-1) to accept an EPC match. Default 0.85.",
+                        "default": 0.85
+                    }
+                },
+                "type": "object",
+                "title": "FloorAreaRequest",
+                "example": {
+                    "address": "74, Dukes Road, Tamworth, B78 1PW",
+                    "match_threshold": 0.85
                 }
             },
             "GetMedianPropertiesRequest": {

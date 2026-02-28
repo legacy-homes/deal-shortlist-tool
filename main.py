@@ -13,6 +13,7 @@ Endpoints:
   POST /api/calculate_median      - Calculate median sold price
   POST /api/find_deals            - Find undervalued properties (combined)
   POST /api/get_median_properties - Get the list of sold properties used in median calculation
+  POST /api/extract_floor_area    - Extract floor area (sq m) from UK EPC database for a given address
   POST /api/parser/fix            - Trigger parser fix workflow (MANUS_FIX_PARSING)
   POST /api/parser/test           - Run parser test suite (MANUS_TEST_PARSING)
 
@@ -50,6 +51,7 @@ SHARED_DIR = BASE_DIR / 'shared'
 MEDIAN_DIR = BASE_DIR / 'MedianPriceCalculator'
 DEAL_DIR = BASE_DIR / 'PropertyDealFinder'
 TEST_DIR = BASE_DIR / 'test_suite'
+FLOOR_AREA_DIR = BASE_DIR / 'FloorAreaExtractor'
 GDRIVE_PARSER_PATH = 'DealFinder/Tools/RightmoveParsingModule/shared/rightmove_parsers.py'
 GDRIVE_INTEGRATED_PARSER_PATH = 'DealFinder/Tools/IntegratedTools_v2/shared/rightmove_parsers.py'
 RCLONE_CONFIG = '/home/ubuntu/.gdrive-rclone.ini'
@@ -57,6 +59,7 @@ RCLONE_CONFIG = '/home/ubuntu/.gdrive-rclone.ini'
 sys.path.insert(0, str(SHARED_DIR))
 sys.path.insert(0, str(MEDIAN_DIR))
 sys.path.insert(0, str(DEAL_DIR))
+sys.path.insert(0, str(FLOOR_AREA_DIR))
 
 import rightmove_parsers
 from rightmove_parsers import (
@@ -68,6 +71,7 @@ from median_price_calculator import (
     calculate_median_price_progressive,
     fetch_properties_with_filters
 )
+from extract_floor_area import find_floor_area_for_address
 
 # ============================================================================
 # FASTAPI APP
@@ -135,6 +139,27 @@ class GetMedianPropertiesRequest(BaseModel):
     bedrooms: int = Field(3, description="Number of bedrooms")
     tenure: Optional[str] = Field("FREEHOLD", description="Tenure: FREEHOLD, LEASEHOLD, or ANY for both")
     min_properties: int = Field(10, description="Minimum target property count for reliable median")
+
+class FloorAreaRequest(BaseModel):
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "address": "74, Dukes Road, Tamworth, B78 1PW",
+                "match_threshold": 0.85
+            }
+        }
+    }
+    address: str = Field(
+        "74, Dukes Road, Tamworth, B78 1PW",
+        description="Full UK property address including postcode"
+    )
+    match_threshold: float = Field(
+        0.85,
+        description="Minimum address similarity score (0-1) to accept an EPC match. Default 0.85.",
+        ge=0.0,
+        le=1.0
+    )
+
 
 class FindDealsRequest(BaseModel):
     model_config = {
@@ -487,6 +512,40 @@ async def find_deals(req: FindDealsRequest):
 
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=502, detail=f"Error fetching data from Rightmove: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/extract_floor_area", tags=["Floor Area"])
+async def extract_floor_area(req: "FloorAreaRequest"):
+    """
+    Extract total floor area (sq m) for a UK property address from the
+    government EPC (Energy Performance Certificate) database.
+
+    The tool:
+    1. Extracts the postcode from the supplied address.
+    2. Searches the EPC register for all certificates at that postcode.
+    3. Finds the best-matching certificate using address similarity.
+    4. Scrapes the floor area from the certificate page.
+
+    Returns `availability: "Available"` with `floor_area` in sq m when found,
+    or `availability: "NotAvailable"` with a reason when not.
+
+    Note: Makes live requests to find-energy-certificate.service.gov.uk.
+    """
+    try:
+        result = find_floor_area_for_address(
+            full_address=req.address,
+            threshold=req.match_threshold
+        )
+        return {
+            "status": "success",
+            "query": {
+                "address": req.address,
+                "match_threshold": req.match_threshold
+            },
+            "result": result
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
