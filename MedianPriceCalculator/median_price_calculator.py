@@ -190,10 +190,72 @@ def normalize_property_type(property_type):
     return mappings.get(normalized, normalized)
 
 
-def filter_and_calculate_median(all_properties, property_type, bedrooms):
+def _parse_sold_date(sold_date_str):
+    """Parse a sold date string into a datetime. Returns None if unparseable."""
+    if not sold_date_str:
+        return None
+    for fmt in ('%d %b %Y', '%d %B %Y', '%b %Y', '%B %Y'):
+        try:
+            return datetime.strptime(sold_date_str.strip(), fmt)
+        except ValueError:
+            continue
+    return None
+
+
+def _compute_relevance_score(radius_miles, sold_in_years, sold_date_str):
+    """
+    Compute a relevance score (0-100) for a comparable property.
+
+    Scoring rationale:
+    - A comparable sold yesterday within the same postcode area (radius=0)
+      is maximally relevant (100).
+    - Relevance decreases linearly with search radius (max penalty 40 pts
+      across 0 → 1 mile) and with age (max penalty 40 pts across 0 → 3 years).
+    - An additional 20 pts are awarded for being within the tightest time
+      window (sold_in_years == 2), reflecting the preference for recent data.
+
+    Formula:
+        radius_penalty  = min(radius_miles / 1.0, 1.0) * 40
+        age_penalty     = min(actual_age_years / sold_in_years, 1.0) * 40
+        recency_bonus   = 20 if sold_in_years == 2 else 0
+        score           = 100 - radius_penalty - age_penalty + recency_bonus
+        (clamped to [0, 100])
+    """
+    # Radius penalty: 0 miles → 0 pts, 1 mile → 40 pts
+    radius_penalty = min(radius_miles / 1.0, 1.0) * 40
+
+    # Age penalty based on actual sold date vs the window used
+    sold_dt = _parse_sold_date(sold_date_str)
+    if sold_dt:
+        age_years = (datetime.now() - sold_dt).days / 365.25
+        # Normalise against the window that was used to fetch this comparable
+        age_penalty = min(age_years / max(sold_in_years, 1), 1.0) * 40
+    else:
+        # Unknown date — assume worst case within the window
+        age_penalty = 40
+
+    # Recency bonus: data fetched within the tighter 2-year window is preferred
+    recency_bonus = 20 if sold_in_years <= 2 else 0
+
+    score = 100 - radius_penalty - age_penalty + recency_bonus
+    return round(max(0.0, min(100.0, score)), 1)
+
+
+def filter_and_calculate_median(all_properties, property_type, bedrooms, search_params=None):
     """
     Filter properties by type and bedrooms, then calculate median.
-    
+
+    Args:
+        all_properties: Raw list of properties from Rightmove.
+        property_type:  Target property type string.
+        bedrooms:       Target bedroom count.
+        search_params:  The attempt dict used to fetch these properties
+                        (keys: radius, sold_in, label).  When supplied, each
+                        matching comparable is tagged with:
+                          - search_radius_miles
+                          - sold_within_years
+                          - relevance_score
+
     Returns:
         dict: {
             'median_price': int or None,
@@ -203,17 +265,20 @@ def filter_and_calculate_median(all_properties, property_type, bedrooms):
     """
     target_type = normalize_property_type(property_type)
     matching_properties = []
-    
+
     import re
-    
+
+    radius_miles = search_params['radius'] if search_params else 0
+    sold_in_years = search_params['sold_in'] if search_params else 2
+
     for prop in all_properties:
         prop_type = normalize_property_type(prop.get('property_type', ''))
-        
+
         # Handle bedrooms
         prop_bedrooms_value = prop.get('bedrooms')
         if prop_bedrooms_value is None:
             continue
-        
+
         if isinstance(prop_bedrooms_value, int):
             prop_bedrooms = prop_bedrooms_value
         else:
@@ -222,12 +287,12 @@ def filter_and_calculate_median(all_properties, property_type, bedrooms):
                 prop_bedrooms = int(match.group(1))
             else:
                 continue
-        
+
         # Extract price
         sold_price = prop.get('sold_price')
         if sold_price is None:
             continue
-        
+
         if isinstance(sold_price, int):
             price = sold_price
         else:
@@ -239,20 +304,27 @@ def filter_and_calculate_median(all_properties, property_type, bedrooms):
                     continue
             else:
                 continue
-        
+
         # Match type and bedrooms
         if prop_type == target_type and prop_bedrooms == bedrooms:
             prop_copy = prop.copy()
             prop_copy['price'] = price
+            prop_copy['sold_price'] = price
+            # Tag with search context
+            prop_copy['search_radius_miles'] = radius_miles
+            prop_copy['sold_within_years'] = sold_in_years
+            prop_copy['relevance_score'] = _compute_relevance_score(
+                radius_miles, sold_in_years, prop.get('sold_date', '')
+            )
             matching_properties.append(prop_copy)
-    
+
     # Calculate median
     if matching_properties:
         prices = [prop['price'] for prop in matching_properties]
         median_price = int(median(prices))
     else:
         median_price = None
-    
+
     return {
         'median_price': median_price,
         'property_count': len(matching_properties),
@@ -321,8 +393,8 @@ def calculate_median_price_progressive(postcode, property_type, bedrooms, tenure
         
         print(f"  → Fetched {len(all_properties)} total properties from Rightmove")
         
-        # Filter and calculate median
-        result = filter_and_calculate_median(all_properties, property_type, bedrooms)
+        # Filter and calculate median (pass attempt so comparables are tagged)
+        result = filter_and_calculate_median(all_properties, property_type, bedrooms, search_params=attempt)
         result['search_params'] = attempt.copy()
         
         print(f"  → Found {result['property_count']} matching properties ({bedrooms} bed {property_type})")
