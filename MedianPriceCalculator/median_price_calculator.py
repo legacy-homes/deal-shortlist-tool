@@ -325,10 +325,16 @@ def calculate_median_price_progressive(postcode, property_type, bedrooms, tenure
     ]
     
     best_result = None
-    
+
+    # Cumulative tracking across all iterations
+    cumulative_properties = []          # all matching comparables found so far
+    seen_comparable_ids = set()         # dedup key: address + sold_date + sold_price
+    seen_raw_ids = set()                # dedup key for raw fetched properties
+    last_attempt = search_attempts[0]   # track which attempt label to report
+
     for attempt in search_attempts:
         print(f"Trying: {attempt['label']}...")
-        
+
         # Fetch properties with current parameters
         all_properties = fetch_properties_with_filters(
             postcode=postcode,
@@ -337,28 +343,44 @@ def calculate_median_price_progressive(postcode, property_type, bedrooms, tenure
             radius=attempt['radius'],
             sold_in=attempt['sold_in']
         )
-        
+
         print(f"  → Fetched {len(all_properties)} total properties from Rightmove")
-        
-        # Filter and calculate median (pass attempt so comparables are tagged)
-        result = filter_and_calculate_median(all_properties, property_type, bedrooms, search_params=attempt)
-        result['search_params'] = attempt.copy()
-        
-        print(f"  → Found {result['property_count']} matching properties ({bedrooms} bed {property_type})")
-        
-        # Update best result
-        if result['property_count'] > 0:
-            best_result = result
-            
-            # Check if we've met the target
-            if result['property_count'] >= min_properties:
-                print(f"  ✓ SUCCESS: Found {result['property_count']} properties (target: {min_properties})")
-                print(f"  ✓ Median Price: £{result['median_price']:,}\n")
+
+        # Filter and calculate median for THIS batch only (to get tagged comparables)
+        batch_result = filter_and_calculate_median(all_properties, property_type, bedrooms, search_params=attempt)
+
+        # Append only NEW matching comparables to the cumulative list
+        new_count = 0
+        for prop in batch_result['properties']:
+            comp_id = f"{prop.get('address', '')}_{prop.get('sold_date', '')}_{prop.get('sold_price', '')}"
+            if comp_id not in seen_comparable_ids:
+                seen_comparable_ids.add(comp_id)
+                cumulative_properties.append(prop)
+                new_count += 1
+
+        print(f"  → {new_count} new matching properties added | cumulative total: {len(cumulative_properties)}")
+        last_attempt = attempt
+
+        # Recalculate median over the full cumulative list
+        if cumulative_properties:
+            from statistics import median as _median
+            prices = [p['price'] for p in cumulative_properties]
+            cumulative_median = int(_median(prices))
+            best_result = {
+                'median_price': cumulative_median,
+                'property_count': len(cumulative_properties),
+                'properties': cumulative_properties,
+                'search_params': attempt.copy()
+            }
+
+            if len(cumulative_properties) >= min_properties:
+                print(f"  ✓ SUCCESS: {len(cumulative_properties)} cumulative properties (target: {min_properties})")
+                print(f"  ✓ Median Price: £{cumulative_median:,}\n")
                 break
             else:
-                print(f"  ⚠ Only {result['property_count']} properties (target: {min_properties}), expanding search...\n")
+                print(f"  ⚠ {len(cumulative_properties)} cumulative properties (target: {min_properties}), expanding search...\n")
         else:
-            print(f"  ✗ No matching properties, expanding search...\n")
+            print(f"  ✗ No matching properties yet, expanding search...\n")
     
     # Return best result found
     if best_result:
