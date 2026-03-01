@@ -185,6 +185,15 @@ export function SearchPage() {
       cell: (row: DealProperty) => row.bedrooms,
     },
     {
+      header: "Floor Area",
+      cell: (row: DealProperty) =>
+        row.floor_area != null ? (
+          <span className="text-xs">{row.floor_area}</span>
+        ) : (
+          <span className="text-gray-400 text-xs italic">—</span>
+        ),
+    },
+    {
       header: "Asking Price",
       cell: (row: DealProperty) => (
         <span className="font-semibold">£{row.asking_price.toLocaleString()}</span>

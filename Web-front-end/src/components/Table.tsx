@@ -11,9 +11,10 @@ interface TableProps<T> {
   columns: Column<T>[];
   data: T[];
   emptyMessage?: string;
+  rowClassName?: (row: T) => string;
 }
 
-export function Table<T>({ columns, data, emptyMessage = "No data." }: TableProps<T>) {
+export function Table<T>({ columns, data, emptyMessage = "No data.", rowClassName }: TableProps<T>) {
   return (
     <div className="overflow-x-auto rounded-lg border border-gray-200">
       <table className="min-w-full divide-y divide-gray-200 text-sm">
@@ -37,8 +38,10 @@ export function Table<T>({ columns, data, emptyMessage = "No data." }: TableProp
               </td>
             </tr>
           ) : (
-            data.map((row, i) => (
-              <tr key={i} className="hover:bg-gray-50 transition-colors">
+            data.map((row, i) => {
+              const extraClass = rowClassName ? rowClassName(row) : "";
+              return (
+              <tr key={i} className={`transition-colors ${extraClass || "hover:bg-gray-50"}`}>
                 {columns.map((col) => (
                   <td
                     key={col.header}
@@ -52,7 +55,8 @@ export function Table<T>({ columns, data, emptyMessage = "No data." }: TableProp
                   </td>
                 ))}
               </tr>
-            ))
+              );
+            })
           )}
         </tbody>
       </table>

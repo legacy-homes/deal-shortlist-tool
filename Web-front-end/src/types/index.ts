@@ -21,6 +21,8 @@ export interface DealProperty {
   difference: number | null;
   sample_size: number | null;
   link: string;
+  floor_area: string | null;
+  floor_area_availability: string | null;
   comparables_postcode: string;
   median_search_params: { label: string } | null;
   comparable_properties: ComparableProperty[] | null;
@@ -45,7 +47,9 @@ export interface ComparableProperty {
   sold_date: string;
   sold_price: number;
   link: string;
-  floor_area?: string; // empty for now, field reserved
+  floor_area: string | null;
+  floor_area_availability: string | null;
+  search_radius_miles: number;
 }
 
 export interface GetMedianPropertiesResponse {

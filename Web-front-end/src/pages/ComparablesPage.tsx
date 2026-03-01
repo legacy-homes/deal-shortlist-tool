@@ -15,6 +15,13 @@ import {
 } from "../store/storage";
 import type { ComparableProperty, ComparablesCacheEntry } from "../types";
 
+/** Ensure sold-property links have the full Rightmove domain */
+function rmUrl(link: string): string {
+  if (!link) return "#";
+  if (link.startsWith("http")) return link;
+  return "https://www.rightmove.co.uk" + link;
+}
+
 export function ComparablesPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -148,7 +155,7 @@ export function ComparablesPage() {
       header: "Rightmove Link",
       cell: (row: ComparableProperty) => (
         <a
-          href={row.link}
+          href={rmUrl(row.link)}
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-1 text-blue-600 hover:underline text-xs"
@@ -182,7 +189,20 @@ export function ComparablesPage() {
     },
     {
       header: "Floor Area",
-      cell: () => <span className="text-gray-400 text-xs italic">—</span>,
+      cell: (row: ComparableProperty) =>
+        row.floor_area != null ? (
+          <span className="text-xs">{row.floor_area}</span>
+        ) : (
+          <span className="text-gray-400 text-xs italic">—</span>
+        ),
+    },
+    {
+      header: "Search Radius",
+      cell: (row: ComparableProperty) => (
+        <span className="text-xs">
+          {row.search_radius_miles === 0 ? "This area" : `${row.search_radius_miles} mi`}
+        </span>
+      ),
     },
     {
       header: "Qualify Comparable",
@@ -269,6 +289,11 @@ export function ComparablesPage() {
                 columns={columns}
                 data={data.properties ?? []}
                 emptyMessage="No comparable sales found."
+                rowClassName={(row) =>
+                  row.search_radius_miles > 0.25
+                    ? "bg-amber-50 hover:bg-amber-100"
+                    : ""
+                }
               />
             </CardContent>
           </Card>
