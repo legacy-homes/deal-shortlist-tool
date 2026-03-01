@@ -22,13 +22,13 @@ from typing import Dict, List, Optional, Any
 # VERSION TRACKING
 # ============================================================================
 
-PARSER_VERSION = "2.0.8"
+PARSER_VERSION = "2.0.6"
 LAST_VERIFIED_DATE = "2026-03-01"
 
 # Track which Rightmove structure version this parser supports
 RIGHTMOVE_STRUCTURE_VERSION = {
-    'active_listings': '2026-02',  # __NEXT_DATA__ in script tag
-    'sold_listings': '2026-03-01'  # React Router context (supports filtered & unfiltered pages)
+    'active_listings': '2026-03',  # __NEXT_DATA__ in script tag
+    'sold_listings': '2026-02-24'  # React Router context (supports filtered & unfiltered pages)
 }
 
 

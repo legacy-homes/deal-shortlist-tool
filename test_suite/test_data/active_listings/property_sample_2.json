@@ -1,0 +1,441 @@
+{
+  "id": 170549159,
+  "bedrooms": 2,
+  "bathrooms": null,
+  "numberOfImages": 27,
+  "numberOfFloorplans": 1,
+  "numberOfVirtualTours": 4,
+  "summary": "SHOW HOMES NOW OPEN! 2 bedroom townhouse available to buy with SHARED OWNERSHIP, 25% share price shown. Excellent location, sitting right on the edge of Manchester City Centre, and near the heart of Salford Quays. IMPRESSIVE CO-WORKING SPACE & ROOF TERRACE!",
+  "displayAddress": "Worrall Street,\r\nSalford,\r\nM5 4UB",
+  "countryCode": "GB",
+  "location": {
+    "latitude": 53.47357,
+    "longitude": -2.26798
+  },
+  "images": [
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/37fa927ba/170549159/37fa927bad33fb45ae19c517d3c6b0a8_max_476x317.jpeg",
+      "url": "property-photo/37fa927ba/170549159/37fa927bad33fb45ae19c517d3c6b0a8.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/0169f50a8/170549159/0169f50a8ebc6dc7831329e3499d3706_max_476x317.jpeg",
+      "url": "property-photo/0169f50a8/170549159/0169f50a8ebc6dc7831329e3499d3706.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/f942116b8/170549159/f942116b8b1214a67d8886f4ade75b3f_max_476x317.jpeg",
+      "url": "property-photo/f942116b8/170549159/f942116b8b1214a67d8886f4ade75b3f.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/ecc681ed4/170549159/ecc681ed4210ba9232d2b1f75aac08df_max_476x317.jpeg",
+      "url": "property-photo/ecc681ed4/170549159/ecc681ed4210ba9232d2b1f75aac08df.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/8073b5ac4/170549159/8073b5ac412c0d6cf4173bf8775dc6ae_max_476x317.jpeg",
+      "url": "property-photo/8073b5ac4/170549159/8073b5ac412c0d6cf4173bf8775dc6ae.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/934eda9da/170549159/934eda9da0bc51374ce0c9e7b0a857b0_max_476x317.jpeg",
+      "url": "property-photo/934eda9da/170549159/934eda9da0bc51374ce0c9e7b0a857b0.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/b9c60856e/170549159/b9c60856e9a83044349ce71ead59e127_max_476x317.jpeg",
+      "url": "property-photo/b9c60856e/170549159/b9c60856e9a83044349ce71ead59e127.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/4a5636084/170549159/4a563608416f8b095653bee3fca84703_max_476x317.jpeg",
+      "url": "property-photo/4a5636084/170549159/4a563608416f8b095653bee3fca84703.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/a6eb5747c/170549159/a6eb5747c362696d075f99ff90b875b4_max_476x317.jpeg",
+      "url": "property-photo/a6eb5747c/170549159/a6eb5747c362696d075f99ff90b875b4.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/bb461a76e/170549159/bb461a76efb64f3253ba55b794af24da_max_476x317.jpeg",
+      "url": "property-photo/bb461a76e/170549159/bb461a76efb64f3253ba55b794af24da.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/77cf209cc/170549159/77cf209cc1c200e3d3d41a1bae52fec3_max_476x317.jpeg",
+      "url": "property-photo/77cf209cc/170549159/77cf209cc1c200e3d3d41a1bae52fec3.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/9e1d0e067/170549159/9e1d0e067f95ee0d61a34b247077f1ae_max_476x317.jpeg",
+      "url": "property-photo/9e1d0e067/170549159/9e1d0e067f95ee0d61a34b247077f1ae.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/0fd98eab4/170549159/0fd98eab4cc00bbb3386cff8ce8f89d5_max_476x317.jpeg",
+      "url": "property-photo/0fd98eab4/170549159/0fd98eab4cc00bbb3386cff8ce8f89d5.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/eeea520c5/170549159/eeea520c5a033734407c7f7d6d6b1bd7_max_476x317.jpeg",
+      "url": "property-photo/eeea520c5/170549159/eeea520c5a033734407c7f7d6d6b1bd7.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/c681d5ac1/170549159/c681d5ac18495899deac66c519f20632_max_476x317.jpeg",
+      "url": "property-photo/c681d5ac1/170549159/c681d5ac18495899deac66c519f20632.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/faf32e69a/170549159/faf32e69a9835404f698ecd88f14c8ae_max_476x317.jpeg",
+      "url": "property-photo/faf32e69a/170549159/faf32e69a9835404f698ecd88f14c8ae.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/4b6d02d4d/170549159/4b6d02d4d58f0cdbf56bc54e7c7d8177_max_476x317.jpeg",
+      "url": "property-photo/4b6d02d4d/170549159/4b6d02d4d58f0cdbf56bc54e7c7d8177.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/d02351ba2/170549159/d02351ba2a3a217406ce7395644ccfcb_max_476x317.jpeg",
+      "url": "property-photo/d02351ba2/170549159/d02351ba2a3a217406ce7395644ccfcb.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/585e28a75/170549159/585e28a75270d4ce2f9717c58b7fb19b_max_476x317.jpeg",
+      "url": "property-photo/585e28a75/170549159/585e28a75270d4ce2f9717c58b7fb19b.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/204c348e5/170549159/204c348e5d6a7f79728818eadb4b4488_max_476x317.jpeg",
+      "url": "property-photo/204c348e5/170549159/204c348e5d6a7f79728818eadb4b4488.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/bdac6e42c/170549159/bdac6e42ce10440adb7cfe0c5e38adae_max_476x317.jpeg",
+      "url": "property-photo/bdac6e42c/170549159/bdac6e42ce10440adb7cfe0c5e38adae.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/0c841d3b0/170549159/0c841d3b03920e9d244ca44a59f70849_max_476x317.jpeg",
+      "url": "property-photo/0c841d3b0/170549159/0c841d3b03920e9d244ca44a59f70849.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/e9197328c/170549159/e9197328c117c043bab6e25232475765_max_476x317.jpeg",
+      "url": "property-photo/e9197328c/170549159/e9197328c117c043bab6e25232475765.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/a60e09a57/170549159/a60e09a5766b4140ddb110abed54d3fe_max_476x317.jpeg",
+      "url": "property-photo/a60e09a57/170549159/a60e09a5766b4140ddb110abed54d3fe.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/c72c06836/170549159/c72c0683600acd34f50c6dcfeda6ffbe_max_476x317.jpeg",
+      "url": "property-photo/c72c06836/170549159/c72c0683600acd34f50c6dcfeda6ffbe.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/4eb16dfa8/170549159/4eb16dfa83a19aaa07da7a0d759e877e_max_476x317.jpeg",
+      "url": "property-photo/4eb16dfa8/170549159/4eb16dfa83a19aaa07da7a0d759e877e.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/757660c8d/170549159/757660c8d87c9151feb41466be8c8827_max_476x317.jpeg",
+      "url": "property-photo/757660c8d/170549159/757660c8d87c9151feb41466be8c8827.jpeg",
+      "caption": null
+    }
+  ],
+  "propertySubType": "Town House",
+  "tenure": {
+    "tenureType": "LEASEHOLD"
+  },
+  "letAvailableDate": null,
+  "listingUpdate": {
+    "listingUpdateReason": "new",
+    "listingUpdateDate": "2025-12-23T13:50:04Z"
+  },
+  "price": {
+    "amount": 80000,
+    "frequency": "not specified",
+    "currencyCode": "GBP",
+    "displayPrices": [
+      {
+        "displayPrice": "\u00a380,000",
+        "displayPriceQualifier": "Shared ownership"
+      }
+    ]
+  },
+  "premiumListing": true,
+  "featuredProperty": false,
+  "commercialSearchProminenceSelected": false,
+  "customer": {
+    "branchId": 131167,
+    "brandPlusLogoURI": "/brand/brand_rmchoice_logo_23722_0000.jpeg",
+    "contactTelephone": "0161 524 3813",
+    "branchDisplayName": "Plumlife",
+    "branchName": "Worrall Street",
+    "brandTradingName": "Plumlife",
+    "branchLandingPageUrl": "/developer/branch/Plumlife/Worrall-Street-131167.html",
+    "development": true,
+    "mediaServerUrl": "https://media.rightmove.co.uk:443",
+    "showReducedProperties": true,
+    "hasBrandPlus": false,
+    "commercial": false,
+    "showOnMap": true,
+    "enhancedListing": false,
+    "developmentContent": null,
+    "buildToRent": false,
+    "buildToRentBenefits": [],
+    "updateDate": "2025-05-08T09:04:55Z",
+    "brandPlusLogoUrl": "https://media.rightmove.co.uk:443/brand/brand_rmchoice_logo_23722_0000.jpeg",
+    "primaryBrandColour": null
+  },
+  "distance": null,
+  "transactionType": "buy",
+  "productLabel": {
+    "productLabelText": "Show Home Now Open",
+    "spotlightLabel": true
+  },
+  "commercial": false,
+  "development": true,
+  "residential": true,
+  "students": false,
+  "auction": false,
+  "feesApply": false,
+  "feesApplyText": null,
+  "displaySize": "830 sq. ft.",
+  "showOnMap": true,
+  "propertyUrl": "/properties/170549159#/?channel=RES_BUY",
+  "contactUrl": "/property-for-sale/contactBranch.html?propertyId=170549159",
+  "staticMapUrl": null,
+  "channel": "BUY",
+  "firstVisibleDate": "2025-12-23T13:44:25Z",
+  "keywords": [],
+  "tags": [],
+  "keywordMatchType": "no_keyword",
+  "saved": false,
+  "hidden": false,
+  "onlineViewingsAvailable": false,
+  "lozengeModel": {
+    "matchingLozenges": [
+      {
+        "type": "NEW_HOME",
+        "priority": 4
+      }
+    ]
+  },
+  "streetView": {
+    "showStreetView": true
+  },
+  "enquiredTimestamp": null,
+  "updateDate": "2026-01-30T13:09:27Z",
+  "enquiryAddedTimestamp": null,
+  "enquiryCalledTimestamp": null,
+  "reviews": null,
+  "keyFeatures": [
+    {
+      "order": 1,
+      "description": "Available to buy with Shared Ownership, the more affordable way to buy a new home",
+      "htmlDescription": "Available to buy with Shared Ownership, the more affordable way to buy a new home"
+    },
+    {
+      "order": 2,
+      "description": "25% share price shown",
+      "htmlDescription": "25% share price shown"
+    },
+    {
+      "order": 3,
+      "description": "Impressive co-working space, designed by the former winner of Interior Design Masters",
+      "htmlDescription": "Impressive co-working space, designed by the former winner of Interior Design Masters"
+    },
+    {
+      "order": 4,
+      "description": "Roof terrace, exclusively for shared ownership homeowners",
+      "htmlDescription": "Roof terrace, exclusively for shared ownership homeowners "
+    },
+    {
+      "order": 5,
+      "description": "\u00a3500 CONTRIBUTION TOWARDS LEGAL FEES AVAILABLE^",
+      "htmlDescription": "\u00a3500 CONTRIBUTION TOWARDS LEGAL FEES AVAILABLE^"
+    },
+    {
+      "order": 6,
+      "description": "Open plan kitchen/living space",
+      "htmlDescription": "Open plan kitchen/living space"
+    },
+    {
+      "order": 7,
+      "description": "Walking distance to Cornbrook tram stop",
+      "htmlDescription": "Walking distance to Cornbrook tram stop"
+    },
+    {
+      "order": 8,
+      "description": "Two good sized bedrooms",
+      "htmlDescription": "Two good sized bedrooms"
+    },
+    {
+      "order": 9,
+      "description": "Handy cycle and postal storage",
+      "htmlDescription": "Handy cycle and postal storage"
+    },
+    {
+      "order": 10,
+      "description": "Sitting right on the edge of Manchester City Centre, and near the heart of Salford Quays",
+      "htmlDescription": "Sitting right on the edge of Manchester City Centre, and near the heart of Salford Quays"
+    }
+  ],
+  "enhancedListing": false,
+  "propertyImages": {
+    "images": [
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/37fa927ba/170549159/37fa927bad33fb45ae19c517d3c6b0a8_max_476x317.jpeg",
+        "url": "property-photo/37fa927ba/170549159/37fa927bad33fb45ae19c517d3c6b0a8.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/0169f50a8/170549159/0169f50a8ebc6dc7831329e3499d3706_max_476x317.jpeg",
+        "url": "property-photo/0169f50a8/170549159/0169f50a8ebc6dc7831329e3499d3706.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/f942116b8/170549159/f942116b8b1214a67d8886f4ade75b3f_max_476x317.jpeg",
+        "url": "property-photo/f942116b8/170549159/f942116b8b1214a67d8886f4ade75b3f.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/ecc681ed4/170549159/ecc681ed4210ba9232d2b1f75aac08df_max_476x317.jpeg",
+        "url": "property-photo/ecc681ed4/170549159/ecc681ed4210ba9232d2b1f75aac08df.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/8073b5ac4/170549159/8073b5ac412c0d6cf4173bf8775dc6ae_max_476x317.jpeg",
+        "url": "property-photo/8073b5ac4/170549159/8073b5ac412c0d6cf4173bf8775dc6ae.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/934eda9da/170549159/934eda9da0bc51374ce0c9e7b0a857b0_max_476x317.jpeg",
+        "url": "property-photo/934eda9da/170549159/934eda9da0bc51374ce0c9e7b0a857b0.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/b9c60856e/170549159/b9c60856e9a83044349ce71ead59e127_max_476x317.jpeg",
+        "url": "property-photo/b9c60856e/170549159/b9c60856e9a83044349ce71ead59e127.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/4a5636084/170549159/4a563608416f8b095653bee3fca84703_max_476x317.jpeg",
+        "url": "property-photo/4a5636084/170549159/4a563608416f8b095653bee3fca84703.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/a6eb5747c/170549159/a6eb5747c362696d075f99ff90b875b4_max_476x317.jpeg",
+        "url": "property-photo/a6eb5747c/170549159/a6eb5747c362696d075f99ff90b875b4.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/bb461a76e/170549159/bb461a76efb64f3253ba55b794af24da_max_476x317.jpeg",
+        "url": "property-photo/bb461a76e/170549159/bb461a76efb64f3253ba55b794af24da.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/77cf209cc/170549159/77cf209cc1c200e3d3d41a1bae52fec3_max_476x317.jpeg",
+        "url": "property-photo/77cf209cc/170549159/77cf209cc1c200e3d3d41a1bae52fec3.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/9e1d0e067/170549159/9e1d0e067f95ee0d61a34b247077f1ae_max_476x317.jpeg",
+        "url": "property-photo/9e1d0e067/170549159/9e1d0e067f95ee0d61a34b247077f1ae.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/0fd98eab4/170549159/0fd98eab4cc00bbb3386cff8ce8f89d5_max_476x317.jpeg",
+        "url": "property-photo/0fd98eab4/170549159/0fd98eab4cc00bbb3386cff8ce8f89d5.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/eeea520c5/170549159/eeea520c5a033734407c7f7d6d6b1bd7_max_476x317.jpeg",
+        "url": "property-photo/eeea520c5/170549159/eeea520c5a033734407c7f7d6d6b1bd7.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/c681d5ac1/170549159/c681d5ac18495899deac66c519f20632_max_476x317.jpeg",
+        "url": "property-photo/c681d5ac1/170549159/c681d5ac18495899deac66c519f20632.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/faf32e69a/170549159/faf32e69a9835404f698ecd88f14c8ae_max_476x317.jpeg",
+        "url": "property-photo/faf32e69a/170549159/faf32e69a9835404f698ecd88f14c8ae.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/4b6d02d4d/170549159/4b6d02d4d58f0cdbf56bc54e7c7d8177_max_476x317.jpeg",
+        "url": "property-photo/4b6d02d4d/170549159/4b6d02d4d58f0cdbf56bc54e7c7d8177.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/d02351ba2/170549159/d02351ba2a3a217406ce7395644ccfcb_max_476x317.jpeg",
+        "url": "property-photo/d02351ba2/170549159/d02351ba2a3a217406ce7395644ccfcb.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/585e28a75/170549159/585e28a75270d4ce2f9717c58b7fb19b_max_476x317.jpeg",
+        "url": "property-photo/585e28a75/170549159/585e28a75270d4ce2f9717c58b7fb19b.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/204c348e5/170549159/204c348e5d6a7f79728818eadb4b4488_max_476x317.jpeg",
+        "url": "property-photo/204c348e5/170549159/204c348e5d6a7f79728818eadb4b4488.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/bdac6e42c/170549159/bdac6e42ce10440adb7cfe0c5e38adae_max_476x317.jpeg",
+        "url": "property-photo/bdac6e42c/170549159/bdac6e42ce10440adb7cfe0c5e38adae.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/0c841d3b0/170549159/0c841d3b03920e9d244ca44a59f70849_max_476x317.jpeg",
+        "url": "property-photo/0c841d3b0/170549159/0c841d3b03920e9d244ca44a59f70849.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/e9197328c/170549159/e9197328c117c043bab6e25232475765_max_476x317.jpeg",
+        "url": "property-photo/e9197328c/170549159/e9197328c117c043bab6e25232475765.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/a60e09a57/170549159/a60e09a5766b4140ddb110abed54d3fe_max_476x317.jpeg",
+        "url": "property-photo/a60e09a57/170549159/a60e09a5766b4140ddb110abed54d3fe.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/c72c06836/170549159/c72c0683600acd34f50c6dcfeda6ffbe_max_476x317.jpeg",
+        "url": "property-photo/c72c06836/170549159/c72c0683600acd34f50c6dcfeda6ffbe.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/4eb16dfa8/170549159/4eb16dfa83a19aaa07da7a0d759e877e_max_476x317.jpeg",
+        "url": "property-photo/4eb16dfa8/170549159/4eb16dfa83a19aaa07da7a0d759e877e.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/757660c8d/170549159/757660c8d87c9151feb41466be8c8827_max_476x317.jpeg",
+        "url": "property-photo/757660c8d/170549159/757660c8d87c9151feb41466be8c8827.jpeg",
+        "caption": null
+      }
+    ],
+    "mainImageSrc": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/37fa927ba/170549159/37fa927bad33fb45ae19c517d3c6b0a8_max_476x317.jpeg",
+    "mainMapImageSrc": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/37fa927ba/170549159/37fa927bad33fb45ae19c517d3c6b0a8_max_296x197.jpeg"
+  },
+  "formattedBranchName": " by Plumlife",
+  "addedOrReduced": "Added on 23/12/2025",
+  "formattedDistance": "",
+  "heading": "",
+  "propertyTypeFullDescription": "2 bedroom town house for sale",
+  "displayStatus": "",
+  "isRecent": false,
+  "hasBrandPlus": false
+}
