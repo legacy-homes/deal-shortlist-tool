@@ -1,0 +1,231 @@
+{
+  "id": 168395075,
+  "bedrooms": 3,
+  "bathrooms": 0,
+  "numberOfImages": 9,
+  "numberOfFloorplans": 0,
+  "numberOfVirtualTours": 0,
+  "summary": "CASH BUYERS PREFERRED!! Looking to invest in Droylsden? Look no further than this cosy end-of-terrace house that's a real gem! With three bedrooms and no onward vendor chain, this property is an ideal investment opportunity. Hop on and off the nearby transport links easily, making commutes a bree...",
+  "displayAddress": "Edge Lane, Droylsden, M43",
+  "countryCode": "GB",
+  "location": {
+    "latitude": 53.476527,
+    "longitude": -2.16226
+  },
+  "images": [
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/7a776e65e/168395075/7a776e65e5199a9aee68747c40aec374_max_476x317.jpeg",
+      "url": "property-photo/7a776e65e/168395075/7a776e65e5199a9aee68747c40aec374.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/147dc98a9/168395075/147dc98a99e3a8935a7db707e223f8ed_max_476x317.jpeg",
+      "url": "property-photo/147dc98a9/168395075/147dc98a99e3a8935a7db707e223f8ed.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/25a44357c/168395075/25a44357c5b9f702e72ae96176e98c36_max_476x317.jpeg",
+      "url": "property-photo/25a44357c/168395075/25a44357c5b9f702e72ae96176e98c36.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/a1fe036bc/168395075/a1fe036bcfa002825ec5d5b92896ebed_max_476x317.jpeg",
+      "url": "property-photo/a1fe036bc/168395075/a1fe036bcfa002825ec5d5b92896ebed.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/f9e329ff9/168395075/f9e329ff9b04fababda02824c666d4d1_max_476x317.jpeg",
+      "url": "property-photo/f9e329ff9/168395075/f9e329ff9b04fababda02824c666d4d1.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/ba0683add/168395075/ba0683adde6210e92085924c6bd6bd37_max_476x317.jpeg",
+      "url": "property-photo/ba0683add/168395075/ba0683adde6210e92085924c6bd6bd37.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/39c42e8dd/168395075/39c42e8dd3332e97fe9b7987c46c9700_max_476x317.jpeg",
+      "url": "property-photo/39c42e8dd/168395075/39c42e8dd3332e97fe9b7987c46c9700.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/f75793af2/168395075/f75793af2c7a8bff1640a6e255303557_max_476x317.jpeg",
+      "url": "property-photo/f75793af2/168395075/f75793af2c7a8bff1640a6e255303557.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/b7cc934eb/168395075/b7cc934eb38a099b58958269d39519bb_max_476x317.jpeg",
+      "url": "property-photo/b7cc934eb/168395075/b7cc934eb38a099b58958269d39519bb.jpeg",
+      "caption": null
+    }
+  ],
+  "propertySubType": "Not Specified",
+  "tenure": {
+    "tenureType": "FREEHOLD"
+  },
+  "letAvailableDate": null,
+  "listingUpdate": {
+    "listingUpdateReason": "price_reduced",
+    "listingUpdateDate": "2025-12-24T10:46:15Z"
+  },
+  "price": {
+    "amount": 95000,
+    "frequency": "not specified",
+    "currencyCode": "GBP",
+    "displayPrices": [
+      {
+        "displayPrice": "\u00a395,000",
+        "displayPriceQualifier": ""
+      }
+    ]
+  },
+  "premiumListing": false,
+  "featuredProperty": false,
+  "commercialSearchProminenceSelected": false,
+  "customer": {
+    "branchId": 193847,
+    "brandPlusLogoURI": "/company/clogo_rmchoice_59300_0004.png",
+    "contactTelephone": "0161 524 5121",
+    "branchDisplayName": "Alex Jones Estate Agents, Ashton Under Lyne",
+    "branchName": "Ashton Under Lyne",
+    "brandTradingName": "Alex Jones Estate Agents",
+    "branchLandingPageUrl": "/estate-agents/agent/Alex-Jones-Estate-Agents/Ashton-Under-Lyne-193847.html",
+    "development": false,
+    "mediaServerUrl": "https://media.rightmove.co.uk:443",
+    "showReducedProperties": true,
+    "hasBrandPlus": true,
+    "commercial": false,
+    "showOnMap": true,
+    "enhancedListing": false,
+    "developmentContent": null,
+    "buildToRent": false,
+    "buildToRentBenefits": [],
+    "updateDate": "2025-05-29T23:00:53Z",
+    "brandPlusLogoUrl": "https://media.rightmove.co.uk:443/company/clogo_rmchoice_59300_0004.png",
+    "primaryBrandColour": null
+  },
+  "distance": null,
+  "transactionType": "buy",
+  "productLabel": {
+    "productLabelText": null,
+    "spotlightLabel": false
+  },
+  "commercial": false,
+  "development": false,
+  "residential": true,
+  "students": false,
+  "auction": false,
+  "feesApply": false,
+  "feesApplyText": null,
+  "displaySize": "861 sq. ft.",
+  "showOnMap": true,
+  "propertyUrl": "/properties/168395075#/?channel=RES_BUY",
+  "contactUrl": "/property-for-sale/contactBranch.html?propertyId=168395075",
+  "staticMapUrl": null,
+  "channel": "BUY",
+  "firstVisibleDate": "2025-10-20T15:16:53Z",
+  "keywords": [],
+  "tags": [],
+  "keywordMatchType": "no_keyword",
+  "saved": false,
+  "hidden": false,
+  "onlineViewingsAvailable": false,
+  "lozengeModel": {
+    "matchingLozenges": []
+  },
+  "streetView": {
+    "showStreetView": true
+  },
+  "enquiredTimestamp": null,
+  "updateDate": "2025-12-24T10:46:17Z",
+  "enquiryAddedTimestamp": null,
+  "enquiryCalledTimestamp": null,
+  "reviews": null,
+  "keyFeatures": [
+    {
+      "order": 1,
+      "description": "NO ONWARD VENDOR CHAIN",
+      "htmlDescription": "NO ONWARD VENDOR CHAIN"
+    },
+    {
+      "order": 2,
+      "description": "THREE BEDROOMS",
+      "htmlDescription": "THREE BEDROOMS"
+    },
+    {
+      "order": 3,
+      "description": "IDEAL INVESTMENT",
+      "htmlDescription": "IDEAL INVESTMENT"
+    },
+    {
+      "order": 4,
+      "description": "CLOSE TO TRANSPORT LINKS",
+      "htmlDescription": "CLOSE TO TRANSPORT LINKS"
+    },
+    {
+      "order": 5,
+      "description": "END OF TERRACE",
+      "htmlDescription": "END OF TERRACE"
+    }
+  ],
+  "enhancedListing": false,
+  "propertyImages": {
+    "images": [
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/7a776e65e/168395075/7a776e65e5199a9aee68747c40aec374_max_476x317.jpeg",
+        "url": "property-photo/7a776e65e/168395075/7a776e65e5199a9aee68747c40aec374.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/147dc98a9/168395075/147dc98a99e3a8935a7db707e223f8ed_max_476x317.jpeg",
+        "url": "property-photo/147dc98a9/168395075/147dc98a99e3a8935a7db707e223f8ed.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/25a44357c/168395075/25a44357c5b9f702e72ae96176e98c36_max_476x317.jpeg",
+        "url": "property-photo/25a44357c/168395075/25a44357c5b9f702e72ae96176e98c36.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/a1fe036bc/168395075/a1fe036bcfa002825ec5d5b92896ebed_max_476x317.jpeg",
+        "url": "property-photo/a1fe036bc/168395075/a1fe036bcfa002825ec5d5b92896ebed.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/f9e329ff9/168395075/f9e329ff9b04fababda02824c666d4d1_max_476x317.jpeg",
+        "url": "property-photo/f9e329ff9/168395075/f9e329ff9b04fababda02824c666d4d1.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/ba0683add/168395075/ba0683adde6210e92085924c6bd6bd37_max_476x317.jpeg",
+        "url": "property-photo/ba0683add/168395075/ba0683adde6210e92085924c6bd6bd37.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/39c42e8dd/168395075/39c42e8dd3332e97fe9b7987c46c9700_max_476x317.jpeg",
+        "url": "property-photo/39c42e8dd/168395075/39c42e8dd3332e97fe9b7987c46c9700.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/f75793af2/168395075/f75793af2c7a8bff1640a6e255303557_max_476x317.jpeg",
+        "url": "property-photo/f75793af2/168395075/f75793af2c7a8bff1640a6e255303557.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/b7cc934eb/168395075/b7cc934eb38a099b58958269d39519bb_max_476x317.jpeg",
+        "url": "property-photo/b7cc934eb/168395075/b7cc934eb38a099b58958269d39519bb.jpeg",
+        "caption": null
+      }
+    ],
+    "mainImageSrc": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/7a776e65e/168395075/7a776e65e5199a9aee68747c40aec374_max_476x317.jpeg",
+    "mainMapImageSrc": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/7a776e65e/168395075/7a776e65e5199a9aee68747c40aec374_max_296x197.jpeg"
+  },
+  "formattedBranchName": " by Alex Jones Estate Agents, Ashton Under Lyne",
+  "addedOrReduced": "Reduced on 24/12/2025",
+  "formattedDistance": "",
+  "heading": "",
+  "propertyTypeFullDescription": "3 bedroom property for sale",
+  "displayStatus": "",
+  "isRecent": false,
+  "hasBrandPlus": true
+}

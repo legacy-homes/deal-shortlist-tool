@@ -1,0 +1,206 @@
+{
+  "id": 171442352,
+  "bedrooms": 2,
+  "bathrooms": null,
+  "numberOfImages": 6,
+  "numberOfFloorplans": 0,
+  "numberOfVirtualTours": 0,
+  "summary": "For sale by Auction on 26 February 2026.",
+  "displayAddress": "170 Crab Lane, Manchester M9 8WD",
+  "countryCode": "GB",
+  "location": {
+    "latitude": 53.532541,
+    "longitude": -2.229111
+  },
+  "images": [
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/324ba7e68/171442352/324ba7e682da70e17697cb6c23c10445_max_476x317.jpeg",
+      "url": "property-photo/324ba7e68/171442352/324ba7e682da70e17697cb6c23c10445.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/9386b50eb/171442352/9386b50ebb2d4341332d5a9e4cab2c4c_max_476x317.jpeg",
+      "url": "property-photo/9386b50eb/171442352/9386b50ebb2d4341332d5a9e4cab2c4c.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/064b19361/171442352/064b19361992d2a9cd131c7cf53980e6_max_476x317.jpeg",
+      "url": "property-photo/064b19361/171442352/064b19361992d2a9cd131c7cf53980e6.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/98c9c12f8/171442352/98c9c12f8acddd8bca67af945ef45bc9_max_476x317.jpeg",
+      "url": "property-photo/98c9c12f8/171442352/98c9c12f8acddd8bca67af945ef45bc9.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/905a209af/171442352/905a209af65bc497e533c883c1b3f29c_max_476x317.jpeg",
+      "url": "property-photo/905a209af/171442352/905a209af65bc497e533c883c1b3f29c.jpeg",
+      "caption": null
+    },
+    {
+      "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/136eb5f9f/171442352/136eb5f9ff8474664308b725ecd7f423_max_476x317.jpeg",
+      "url": "property-photo/136eb5f9f/171442352/136eb5f9ff8474664308b725ecd7f423.jpeg",
+      "caption": null
+    }
+  ],
+  "propertySubType": "Terraced",
+  "tenure": {
+    "tenureType": "FREEHOLD"
+  },
+  "letAvailableDate": null,
+  "listingUpdate": {
+    "listingUpdateReason": "new",
+    "listingUpdateDate": "2026-01-26T12:54:02Z"
+  },
+  "price": {
+    "amount": 82000,
+    "frequency": "not specified",
+    "currencyCode": "GBP",
+    "displayPrices": [
+      {
+        "displayPrice": "\u00a382,000",
+        "displayPriceQualifier": "Guide Price"
+      }
+    ]
+  },
+  "premiumListing": false,
+  "featuredProperty": false,
+  "commercialSearchProminenceSelected": false,
+  "customer": {
+    "branchId": 68670,
+    "brandPlusLogoURI": "/partner-logo/17990877-PRODUCTS_LOGO-1770382054386.jpg",
+    "contactTelephone": "03456 462288",
+    "branchDisplayName": "BTG Eddisons Property Auctions, Nationwide",
+    "branchName": "Nationwide",
+    "brandTradingName": "BTG Eddisons Property Auctions",
+    "branchLandingPageUrl": "/estate-agents/agent/BTG-Eddisons-Property-Auctions/Nationwide-68670.html",
+    "development": false,
+    "mediaServerUrl": "https://media.rightmove.co.uk:443",
+    "showReducedProperties": true,
+    "hasBrandPlus": true,
+    "commercial": false,
+    "showOnMap": true,
+    "enhancedListing": false,
+    "developmentContent": null,
+    "buildToRent": false,
+    "buildToRentBenefits": [],
+    "updateDate": "2026-02-11T16:21:08Z",
+    "brandPlusLogoUrl": "https://media.rightmove.co.uk:443/partner-logo/17990877-PRODUCTS_LOGO-1770382054386.jpg",
+    "primaryBrandColour": null
+  },
+  "distance": null,
+  "transactionType": "buy",
+  "productLabel": {
+    "productLabelText": null,
+    "spotlightLabel": false
+  },
+  "commercial": false,
+  "development": false,
+  "residential": true,
+  "students": false,
+  "auction": true,
+  "feesApply": false,
+  "feesApplyText": null,
+  "displaySize": "",
+  "showOnMap": true,
+  "propertyUrl": "/properties/171442352#/?channel=RES_BUY",
+  "contactUrl": "/property-for-sale/contactBranch.html?propertyId=171442352",
+  "staticMapUrl": null,
+  "channel": "BUY",
+  "firstVisibleDate": "2026-01-26T12:48:30Z",
+  "keywords": [],
+  "tags": [],
+  "keywordMatchType": "no_keyword",
+  "saved": false,
+  "hidden": false,
+  "onlineViewingsAvailable": false,
+  "lozengeModel": {
+    "matchingLozenges": []
+  },
+  "streetView": {
+    "showStreetView": true
+  },
+  "enquiredTimestamp": null,
+  "updateDate": "2026-02-08T20:25:03Z",
+  "enquiryAddedTimestamp": null,
+  "enquiryCalledTimestamp": null,
+  "reviews": null,
+  "keyFeatures": [
+    {
+      "order": 1,
+      "description": "Auction: 26.02.2026 09:00",
+      "htmlDescription": "Auction: 26.02.2026 09:00"
+    },
+    {
+      "order": 2,
+      "description": "Council Tax Band: A",
+      "htmlDescription": "Council Tax Band: A"
+    },
+    {
+      "order": 3,
+      "description": "Two bedroom terrace",
+      "htmlDescription": "Two bedroom terrace"
+    },
+    {
+      "order": 4,
+      "description": "Regulated Tenancy producing \u00a33,848.04 per annum",
+      "htmlDescription": "Regulated Tenancy producing \u00a33,848.04 per annum"
+    },
+    {
+      "order": 5,
+      "description": "Popular residential area close to amenities",
+      "htmlDescription": "Popular residential area close to amenities"
+    },
+    {
+      "order": 6,
+      "description": "EPC Rating: E",
+      "htmlDescription": "EPC Rating: E"
+    }
+  ],
+  "enhancedListing": false,
+  "propertyImages": {
+    "images": [
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/324ba7e68/171442352/324ba7e682da70e17697cb6c23c10445_max_476x317.jpeg",
+        "url": "property-photo/324ba7e68/171442352/324ba7e682da70e17697cb6c23c10445.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/9386b50eb/171442352/9386b50ebb2d4341332d5a9e4cab2c4c_max_476x317.jpeg",
+        "url": "property-photo/9386b50eb/171442352/9386b50ebb2d4341332d5a9e4cab2c4c.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/064b19361/171442352/064b19361992d2a9cd131c7cf53980e6_max_476x317.jpeg",
+        "url": "property-photo/064b19361/171442352/064b19361992d2a9cd131c7cf53980e6.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/98c9c12f8/171442352/98c9c12f8acddd8bca67af945ef45bc9_max_476x317.jpeg",
+        "url": "property-photo/98c9c12f8/171442352/98c9c12f8acddd8bca67af945ef45bc9.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/905a209af/171442352/905a209af65bc497e533c883c1b3f29c_max_476x317.jpeg",
+        "url": "property-photo/905a209af/171442352/905a209af65bc497e533c883c1b3f29c.jpeg",
+        "caption": null
+      },
+      {
+        "srcUrl": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/136eb5f9f/171442352/136eb5f9ff8474664308b725ecd7f423_max_476x317.jpeg",
+        "url": "property-photo/136eb5f9f/171442352/136eb5f9ff8474664308b725ecd7f423.jpeg",
+        "caption": null
+      }
+    ],
+    "mainImageSrc": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/324ba7e68/171442352/324ba7e682da70e17697cb6c23c10445_max_476x317.jpeg",
+    "mainMapImageSrc": "https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/property-photo/324ba7e68/171442352/324ba7e682da70e17697cb6c23c10445_max_296x197.jpeg"
+  },
+  "formattedBranchName": " by BTG Eddisons Property Auctions, Nationwide",
+  "addedOrReduced": "Added on 26/01/2026",
+  "formattedDistance": "",
+  "heading": "",
+  "propertyTypeFullDescription": "2 bedroom terraced house for sale",
+  "displayStatus": "",
+  "isRecent": false,
+  "hasBrandPlus": true
+}
