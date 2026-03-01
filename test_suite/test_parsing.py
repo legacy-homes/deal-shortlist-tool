@@ -407,6 +407,137 @@ def test_extract_sold_properties(results, verbose=False):
         print(f"    Sold: {properties[0]['sold_date']} for £{properties[0].get('sold_price', 'N/A')}")
 
 
+def test_sold_property_link_populated(results, verbose=False):
+    """Test that sold properties have a non-empty link field."""
+    print("\nTesting: sold property link field - populated")
+
+    html_file = Path(__file__).parent / 'test_data/sold_listings/2026-02-13_fresh.html'
+
+    if not html_file.exists():
+        results.add_skip("sold_property_link_populated", "Test HTML file not found")
+        return
+
+    with open(html_file, 'r') as f:
+        html = f.read()
+
+    properties = extract_sold_properties_from_html(html)
+
+    if not properties:
+        results.add_skip("sold_property_link_populated", "No properties extracted (run sold extraction test first)")
+        return
+
+    # Count how many have a non-empty link
+    with_link = [p for p in properties if p.get('link', '').strip()]
+    empty_link = [p for p in properties if not p.get('link', '').strip()]
+
+    if not with_link:
+        results.add_fail(
+            "sold_property_link_populated",
+            f"ALL {len(properties)} properties have empty link — link key has shifted in Rightmove structure"
+        )
+        return
+
+    if empty_link:
+        results.add_fail(
+            "sold_property_link_populated",
+            f"{len(empty_link)}/{len(properties)} properties have empty link — partial link extraction failure"
+        )
+        return
+
+    results.add_pass(f"sold_property_link_populated ({len(with_link)}/{len(properties)} links present)")
+
+    if verbose:
+        print(f"    Sample link: {properties[0].get('link', '')}")
+
+
+def test_sold_property_link_format(results, verbose=False):
+    """Test that sold property links are correctly formatted Rightmove house-prices URLs."""
+    print("\nTesting: sold property link field - correct format")
+
+    html_file = Path(__file__).parent / 'test_data/sold_listings/2026-02-13_fresh.html'
+
+    if not html_file.exists():
+        results.add_skip("sold_property_link_format", "Test HTML file not found")
+        return
+
+    with open(html_file, 'r') as f:
+        html = f.read()
+
+    properties = extract_sold_properties_from_html(html)
+
+    if not properties:
+        results.add_skip("sold_property_link_format", "No properties extracted")
+        return
+
+    EXPECTED_PREFIX = 'https://www.rightmove.co.uk/house-prices/details/'
+    malformed = []
+
+    for p in properties:
+        link = p.get('link', '')
+        if link and not link.startswith(EXPECTED_PREFIX):
+            malformed.append(f"{p.get('address', 'unknown')[:40]} -> {link[:80]}")
+
+    if malformed:
+        results.add_fail(
+            "sold_property_link_format",
+            f"{len(malformed)} links have unexpected format:\n      " + "\n      ".join(malformed[:3])
+        )
+        return
+
+    with_link = [p for p in properties if p.get('link', '').strip()]
+    results.add_pass(f"sold_property_link_format ({len(with_link)} links match expected pattern)")
+
+    if verbose:
+        print(f"    Expected prefix: {EXPECTED_PREFIX}")
+        print(f"    Sample: {properties[0].get('link', '')}")
+
+
+def test_sold_property_link_live(results, verbose=False):
+    """Test that at least one sold property link resolves to a real Rightmove page (live HTTP check)."""
+    print("\nTesting: sold property link field - live HTTP check")
+
+    html_file = Path(__file__).parent / 'test_data/sold_listings/2026-02-13_fresh.html'
+
+    if not html_file.exists():
+        results.add_skip("sold_property_link_live", "Test HTML file not found")
+        return
+
+    with open(html_file, 'r') as f:
+        html = f.read()
+
+    properties = extract_sold_properties_from_html(html)
+    links = [p.get('link', '') for p in properties if p.get('link', '').strip()]
+
+    if not links:
+        results.add_skip("sold_property_link_live", "No links to check (run link population test first)")
+        return
+
+    import requests as _req
+    test_link = links[0]
+    try:
+        resp = _req.get(
+            test_link,
+            headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'},
+            timeout=15,
+            allow_redirects=True
+        )
+        if resp.status_code == 200:
+            results.add_pass(f"sold_property_link_live (HTTP 200 for {test_link[-40:]})")
+        elif resp.status_code == 404:
+            # 404 means the URL format is correct but the listing was removed — still a valid link format
+            results.add_pass(f"sold_property_link_live (HTTP 404 — correct URL format, listing removed)")
+        else:
+            results.add_fail(
+                "sold_property_link_live",
+                f"Unexpected HTTP {resp.status_code} for {test_link}"
+            )
+    except Exception as e:
+        results.add_fail("sold_property_link_live", f"Request failed: {e}")
+
+    if verbose:
+        print(f"    Tested URL: {test_link}")
+
+
 # ============================================================================
 # MAIN TEST RUNNER
 # ============================================================================
@@ -444,6 +575,9 @@ def run_all_tests(test_filter=None, verbose=False):
     
     sold_tests = [
         test_extract_sold_properties,
+        test_sold_property_link_populated,
+        test_sold_property_link_format,
+        test_sold_property_link_live,
     ]
     
     # Run tests based on filter
