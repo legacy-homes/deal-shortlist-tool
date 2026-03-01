@@ -22,13 +22,13 @@ from typing import Dict, List, Optional, Any
 # VERSION TRACKING
 # ============================================================================
 
-PARSER_VERSION = "2.0.6"
+PARSER_VERSION = "2.0.7"
 LAST_VERIFIED_DATE = "2026-03-01"
 
 # Track which Rightmove structure version this parser supports
 RIGHTMOVE_STRUCTURE_VERSION = {
     'active_listings': '2026-03',  # __NEXT_DATA__ in script tag
-    'sold_listings': '2026-02-24'  # React Router context (supports filtered & unfiltered pages)
+    'sold_listings': '2026-03-01'  # React Router context (supports filtered & unfiltered pages)
 }
 
 
@@ -444,9 +444,10 @@ def parse_sold_property_from_indexed_array(prop_obj: Dict, data_array: List) -> 
                                         # Try all known price keys (filtered pages use _94, unfiltered use _93)
                                         elif t_key in ('_84', '_94', '_93', '_83', '_92'):  # Sold price (updated 2026-02-19, _84 current)
                                             property_info['sold_price'] = t_actual
-                elif key == '_112':  # Property link (updated 2026-02-24: _112 is direct URL; _114 is map image dict)
-                    if isinstance(actual_value, str):
-                        property_info['link'] = actual_value
+                elif isinstance(actual_value, str) and 'rightmove.co.uk/house-prices/details/' in actual_value:
+                    # Link key shifts between page variants (_111, _112, _118 observed).
+                    # Match any key whose value is the house-prices/details URL (structure-agnostic).
+                    property_info['link'] = actual_value
         
         # Validate required fields
         if 'address' not in property_info or 'sold_date' not in property_info:
