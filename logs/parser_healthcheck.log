@@ -34,3 +34,21 @@ Checking: CV10 0NB — filtered, 0.25 mile, terraced freehold
 [2026-03-08 08:00:09] ✓ ALL CHECKS PASSED — parser is working correctly
 [2026-03-08 08:00:09] ======================================================================
 
+[2026-03-09 17:12:12] ======================================================================
+[2026-03-09 17:12:12] Parser Health Check — v2.1.0 (last verified: 2026-03-05)
+[2026-03-09 17:12:12] ======================================================================
+[2026-03-09 17:12:12] 
+Checking: Manchester — unfiltered, 1 mile radius
+[2026-03-09 17:12:12]   URL: https://www.rightmove.co.uk/house-prices/manchester.html?soldIn=2&radius=1.0
+[2026-03-09 17:12:14]   ✓ PASS — 25 properties extracted
+[2026-03-09 17:12:14]            Sample: 40, Lowfield Road, Cale Green, Stockport SK3 8JS | 22 Dec 2025 | £240,000
+[2026-03-09 17:12:15] 
+Checking: CV10 0NB — filtered, 0.25 mile, terraced freehold
+[2026-03-09 17:12:15]   URL: https://www.rightmove.co.uk/house-prices/cv10-0nb.html?soldIn=2&radius=0.25&propertyType=TERRACED&tenure=FREEHOLD
+[2026-03-09 17:12:16]   ✓ PASS — 13 properties extracted
+[2026-03-09 17:12:16]            Sample: 98, Victoria Road, Nuneaton CV10 0LR | 28 Mar 2025 | £210,000
+[2026-03-09 17:12:17] 
+======================================================================
+[2026-03-09 17:12:17] ✓ ALL CHECKS PASSED — parser is working correctly
+[2026-03-09 17:12:17] ======================================================================
+
