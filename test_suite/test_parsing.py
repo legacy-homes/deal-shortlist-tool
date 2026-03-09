@@ -167,14 +167,16 @@ def test_extract_json_from_active_html(results, verbose=False):
     """Test JSON extraction from active listing HTML"""
     print("\nTesting: extract_json_from_active_listing_html()")
     
-    # Test with real HTML file
-    html_file = Path(__file__).parent / 'test_data/active_listings/2026-02-12_full_page.html'
+    # Prefer newest HTML file, fall back to older
+    html_file = Path(__file__).parent / 'test_data/active_listings/2026-03-01_full_page.html'
+    if not html_file.exists():
+        html_file = Path(__file__).parent / 'test_data/active_listings/2026-02-12_full_page.html'
     
     if not html_file.exists():
         results.add_skip("extract_json_from_active_html", "Test HTML file not found")
         return
     
-    with open(html_file, 'r') as f:
+    with open(html_file, 'r', encoding='utf-8') as f:
         html = f.read()
     
     json_data = extract_json_from_active_listing_html(html)
@@ -197,13 +199,15 @@ def test_parse_active_search_results(results, verbose=False):
     """Test parsing search results from active listing JSON"""
     print("\nTesting: parse_active_search_results()")
     
-    html_file = Path(__file__).parent / 'test_data/active_listings/2026-02-12_full_page.html'
+    html_file = Path(__file__).parent / 'test_data/active_listings/2026-03-01_full_page.html'
+    if not html_file.exists():
+        html_file = Path(__file__).parent / 'test_data/active_listings/2026-02-12_full_page.html'
     
     if not html_file.exists():
         results.add_skip("parse_active_search_results", "Test HTML file not found")
         return
     
-    with open(html_file, 'r') as f:
+    with open(html_file, 'r', encoding='utf-8') as f:
         html = f.read()
     
     json_data = extract_json_from_active_listing_html(html)
@@ -237,7 +241,7 @@ def test_parse_active_property_standard(results, verbose=False):
         results.add_skip("parse_active_property_standard", "Test JSON file not found")
         return
     
-    with open(json_file, 'r') as f:
+    with open(json_file, 'r', encoding='utf-8') as f:
         prop_data = json.load(f)
     
     parsed = parse_active_property(prop_data)
@@ -280,7 +284,7 @@ def test_parse_active_property_featured(results, verbose=False):
         results.add_skip("parse_active_property_featured", "Test JSON file not found")
         return
     
-    with open(json_file, 'r') as f:
+    with open(json_file, 'r', encoding='utf-8') as f:
         prop_data = json.load(f)
     
     parsed = parse_active_property(prop_data)
@@ -300,13 +304,15 @@ def test_extract_active_properties_full_pipeline(results, verbose=False):
     """Test full pipeline: HTML -> parsed properties"""
     print("\nTesting: extract_active_properties_from_html() - full pipeline")
     
-    html_file = Path(__file__).parent / 'test_data/active_listings/2026-02-12_full_page.html'
+    html_file = Path(__file__).parent / 'test_data/active_listings/2026-03-01_full_page.html'
+    if not html_file.exists():
+        html_file = Path(__file__).parent / 'test_data/active_listings/2026-02-12_full_page.html'
     
     if not html_file.exists():
         results.add_skip("extract_active_properties_full", "Test HTML file not found")
         return
     
-    with open(html_file, 'r') as f:
+    with open(html_file, 'r', encoding='utf-8') as f:
         html = f.read()
     
     # Test without featured
@@ -341,13 +347,15 @@ def test_extract_active_pagination(results, verbose=False):
     """Test pagination info extraction"""
     print("\nTesting: extract_active_pagination_info()")
     
-    html_file = Path(__file__).parent / 'test_data/active_listings/2026-02-12_full_page.html'
+    html_file = Path(__file__).parent / 'test_data/active_listings/2026-03-01_full_page.html'
+    if not html_file.exists():
+        html_file = Path(__file__).parent / 'test_data/active_listings/2026-02-12_full_page.html'
     
     if not html_file.exists():
         results.add_skip("extract_active_pagination", "Test HTML file not found")
         return
     
-    with open(html_file, 'r') as f:
+    with open(html_file, 'r', encoding='utf-8') as f:
         html = f.read()
     
     json_data = extract_json_from_active_listing_html(html)
@@ -382,7 +390,7 @@ def test_extract_sold_properties(results, verbose=False):
         results.add_skip("extract_sold_properties", "Test HTML file not found")
         return
     
-    with open(html_file, 'r') as f:
+    with open(html_file, 'r', encoding='utf-8') as f:
         html = f.read()
     
     properties = extract_sold_properties_from_html(html)
@@ -417,7 +425,7 @@ def test_sold_property_link_populated(results, verbose=False):
         results.add_skip("sold_property_link_populated", "Test HTML file not found")
         return
 
-    with open(html_file, 'r') as f:
+    with open(html_file, 'r', encoding='utf-8') as f:
         html = f.read()
 
     properties = extract_sold_properties_from_html(html)
@@ -460,7 +468,7 @@ def test_sold_property_link_format(results, verbose=False):
         results.add_skip("sold_property_link_format", "Test HTML file not found")
         return
 
-    with open(html_file, 'r') as f:
+    with open(html_file, 'r', encoding='utf-8') as f:
         html = f.read()
 
     properties = extract_sold_properties_from_html(html)
@@ -502,7 +510,7 @@ def test_sold_property_link_live(results, verbose=False):
         results.add_skip("sold_property_link_live", "Test HTML file not found")
         return
 
-    with open(html_file, 'r') as f:
+    with open(html_file, 'r', encoding='utf-8') as f:
         html = f.read()
 
     properties = extract_sold_properties_from_html(html)

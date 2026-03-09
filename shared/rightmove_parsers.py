@@ -22,13 +22,13 @@ from typing import Dict, List, Optional, Any
 # VERSION TRACKING
 # ============================================================================
 
-PARSER_VERSION = "2.0.7"
-LAST_VERIFIED_DATE = "2026-03-01"
+PARSER_VERSION = "2.1.0"
+LAST_VERIFIED_DATE = "2026-03-05"
 
 # Track which Rightmove structure version this parser supports
 RIGHTMOVE_STRUCTURE_VERSION = {
-    'active_listings': '2026-03',  # __NEXT_DATA__ in script tag
-    'sold_listings': '2026-03-01'  # React Router context (supports filtered & unfiltered pages)
+    'active_listings': '2026-03',
+    'sold_listings': '2026-03-05-agnostic'  # value-type detection, no longer key-name dependent
 }
 
 
@@ -371,112 +371,164 @@ def extract_json_from_sold_listing_html(html: str) -> List[Dict]:
     return parsed_chunks
 
 
+# ============================================================================
+# VALUE-TYPE DETECTORS  (used by the structure-agnostic sold property parser)
+# These detect field values by their content, not by their key name.
+# This makes the parser immune to Rightmove's periodic key-index shifts.
+# ============================================================================
+
+_DATE_PATTERN = re.compile(r'^\d{1,2}\s+[A-Za-z]{3}\s+\d{4}$')
+_UUID_PATTERN = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', re.IGNORECASE)
+_PROPERTY_TYPE_VALUES = {
+    'SEMI_DETACHED', 'TERRACED', 'DETACHED', 'FLAT',
+    'BUNGALOW', 'LAND', 'PARK_HOME', 'OTHER'
+}
+
+
+def _is_date_value(v) -> bool:
+    """Return True if v looks like a sold date string ('DD Mon YYYY')."""
+    return isinstance(v, str) and bool(_DATE_PATTERN.match(v.strip()))
+
+
+def _is_price_value(v) -> bool:
+    """Return True if v looks like a sold price (int >10000, or £-string >=5 digits)."""
+    if isinstance(v, int):
+        return v > 10000
+    if isinstance(v, str):
+        digits = re.sub(r'[^\d]', '', v)
+        return len(digits) >= 5  # £10,000+
+    return False
+
+
+def _is_uuid(v) -> bool:
+    """Return True if v is a UUID string."""
+    return isinstance(v, str) and bool(_UUID_PATTERN.match(v.strip()))
+
+
+def _is_property_type(v) -> bool:
+    """Return True if v is a known Rightmove property type enum value."""
+    return isinstance(v, str) and v.upper() in _PROPERTY_TYPE_VALUES
+
+
+def _is_address(v) -> bool:
+    """Return True if v is a string that contains a UK postcode (strong address signal)."""
+    return isinstance(v, str) and len(v) > 10 and extract_postcode(v) is not None
+
+
+def _decode_transaction(trans_obj: dict, data_array: List) -> dict:
+    """
+    Decode a single transaction dict, returning {'sold_date': ..., 'sold_price': ...}.
+    Fields are detected by VALUE TYPE — immune to key-index shifts.
+    """
+    result = {}
+    for t_value in trans_obj.values():
+        if isinstance(t_value, int) and t_value < len(data_array):
+            t_actual = data_array[t_value]
+            if 'sold_date' not in result and _is_date_value(t_actual):
+                result['sold_date'] = t_actual
+            elif 'sold_price' not in result and _is_price_value(t_actual):
+                result['sold_price'] = t_actual
+    return result
+
+
 def parse_sold_property_from_indexed_array(prop_obj: Dict, data_array: List) -> Optional[Dict]:
     """
     Parse a single sold property from Rightmove's indexed array structure.
-    
-    **RIGHTMOVE-SPECIFIC:** Index mappings may change frequently!
-    Current mappings (2026-02-13):
-    - _69: Property ID (updated)
-    - _73: Address (updated)
-    - _75: Property type (updated)
-    - _77: Bedrooms (updated)
-    - _90, _89, _80: Transactions list (updated)
-    - _93, _83, _92, _95: Sold price (in transaction, updated)
-    - _95, _85, _93, _94: Sold date (in transaction, updated)
-    - _114: Property link (updated)
-    
-    Args:
-        prop_obj: Property object dict with index keys
-        data_array: Full data array to resolve indices
-        
+
+    FULLY STRUCTURE-AGNOSTIC: all fields are detected by VALUE TYPE, not key name.
+    This means key-index shifts (which Rightmove does periodically) do NOT break parsing.
+
+    Detection strategy per field:
+      id            — UUID string  (^[0-9a-f]{8}-...-[0-9a-f]{12}$)
+      address       — string containing a UK postcode
+      property_type — known Rightmove enum (SEMI_DETACHED, TERRACED, DETACHED, FLAT, BUNGALOW…)
+      bedrooms      — first small int (1–10) whose key immediately follows the property_type key
+      link          — string containing 'rightmove.co.uk/house-prices/details/'
+      transactions  — list of ints whose first element decodes to an object with price + date
+      sold_price    — value-type detected inside the transaction object
+      sold_date     — value-type detected inside the transaction object
+
     Returns:
-        Standardized sold property dict with keys:
-        {
-            'id': str,
-            'postcode': str,
-            'address': str,
-            'property_type': str,
-            'bedrooms': int,
-            'sold_date': str,
-            'sold_price': int,
-            'link': str
-        }
-        Returns None if required fields are missing
+        Standardized sold property dict, or None if required fields are missing.
     """
     try:
         property_info = {}
-        
-        # Decode indexed values
+        prop_type_key_num: Optional[int] = None   # track key ordinal of property_type
+        bedroom_candidates: dict = {}              # key_num -> small int value
+
         for key, value in prop_obj.items():
-            if isinstance(value, int) and value < len(data_array):
-                actual_value = data_array[value]
-                
-                # Map keys to property fields
-                # NOTE: These indices may change when Rightmove updates!
-                if key == '_69':  # Property ID (updated 2026-02-13)
-                    property_info['id'] = actual_value
-                elif key == '_73':  # Address (updated 2026-02-13)
-                    property_info['address'] = actual_value
-                elif key == '_75':  # Property type (updated 2026-02-13)
-                    property_info['property_type'] = actual_value
-                elif key == '_77':  # Bedrooms (updated 2026-02-13)
-                    property_info['bedrooms'] = actual_value
-                elif key in ('_81', '_91', '_90', '_89', '_80'):  # Transactions list (updated 2026-02-19, _81 current)
-                    # Handle both direct list and indexed list
-                    trans_list = actual_value
-                    if isinstance(actual_value, int) and actual_value < len(data_array):
-                        trans_list = data_array[actual_value]  # Resolve index for filtered pages
-                    
-                    if isinstance(trans_list, list) and len(trans_list) > 0:
-                        # Get first transaction
-                        trans_idx = trans_list[0]
-                        if trans_idx < len(data_array):
-                            trans_obj = data_array[trans_idx]
-                            if isinstance(trans_obj, dict):
-                                # Decode transaction data
-                                for t_key, t_value in trans_obj.items():
-                                    if isinstance(t_value, int) and t_value < len(data_array):
-                                        t_actual = data_array[t_value]
-                                        # Try all known date keys (filtered pages use _96, unfiltered use _95)
-                                        if t_key in ('_86', '_96', '_95', '_85'):  # Sold date (updated 2026-02-19, _86 current)
-                                            property_info['sold_date'] = t_actual
-                                        # Try all known price keys (filtered pages use _94, unfiltered use _93)
-                                        elif t_key in ('_84', '_94', '_93', '_83', '_92'):  # Sold price (updated 2026-02-19, _84 current)
-                                            property_info['sold_price'] = t_actual
-                elif isinstance(actual_value, str) and 'rightmove.co.uk/house-prices/details/' in actual_value:
-                    # Link key shifts between page variants (_111, _112, _118 observed).
-                    # Match any key whose value is the house-prices/details URL (structure-agnostic).
-                    property_info['link'] = actual_value
-        
-        # Validate required fields
+            if not (isinstance(value, int) and value < len(data_array)):
+                continue
+            actual_value = data_array[value]
+
+            # -- ID: UUID --------------------------------------------------
+            if 'id' not in property_info and _is_uuid(actual_value):
+                property_info['id'] = actual_value
+
+            # -- Address: string with embedded UK postcode -----------------
+            elif 'address' not in property_info and _is_address(actual_value):
+                property_info['address'] = actual_value
+
+            # -- Property type: known Rightmove enum -----------------------
+            elif 'property_type' not in property_info and _is_property_type(actual_value):
+                property_info['property_type'] = actual_value
+                prop_type_key_num = int(key.lstrip('_'))
+
+            # -- Link: Rightmove house-prices URL --------------------------
+            elif 'link' not in property_info and isinstance(actual_value, str) \
+                    and 'rightmove.co.uk/house-prices/details/' in actual_value:
+                property_info['link'] = actual_value
+
+            # -- Bedroom candidates: small integer (1–10) ------------------
+            # We collect all, then pick the one whose key is immediately after
+            # the property_type key (their relative order is stable across shifts).
+            elif isinstance(actual_value, int) and 0 < actual_value <= 10:
+                key_num = int(key.lstrip('_'))
+                bedroom_candidates[key_num] = actual_value
+
+            # -- Transactions list: list of ints → decoded for price/date --
+            elif 'sold_date' not in property_info and isinstance(actual_value, list) \
+                    and len(actual_value) > 0:
+                first = actual_value[0]
+                if isinstance(first, int) and first < len(data_array):
+                    trans_obj = data_array[first]
+                    if isinstance(trans_obj, dict):
+                        txn = _decode_transaction(trans_obj, data_array)
+                        if 'sold_date' in txn:
+                            property_info['sold_date'] = txn['sold_date']
+                        if 'sold_price' in txn:
+                            property_info['sold_price'] = txn['sold_price']
+
+        # -- Bedrooms: pick the candidate whose key comes just after property_type --
+        if prop_type_key_num is not None and bedroom_candidates:
+            later_keys = sorted(k for k in bedroom_candidates if k > prop_type_key_num)
+            if later_keys:
+                property_info['bedrooms'] = bedroom_candidates[later_keys[0]]
+        elif bedroom_candidates:
+            # Fallback: smallest key wins
+            property_info['bedrooms'] = bedroom_candidates[min(bedroom_candidates)]
+
+        # -- Validate required fields -------------------------------------
         if 'address' not in property_info or 'sold_date' not in property_info:
             return None
-        
-        # Extract postcode from address
-        postcode = extract_postcode(property_info['address'])
-        
-        # Clean property type
+
+        postcode      = extract_postcode(property_info['address'])
         property_type = property_info.get('property_type', '').replace('_', ' ').title()
-        
-        # Extract bedrooms
-        bedrooms = extract_bedrooms(property_info.get('bedrooms', ''))
-        
-        # Clean price
-        sold_price = clean_price(property_info.get('sold_price', ''))
-        
+        bedrooms      = extract_bedrooms(property_info.get('bedrooms', ''))
+        sold_price    = clean_price(property_info.get('sold_price', ''))
+
         return {
-            'id': str(property_info.get('id', '')),
-            'postcode': postcode or '',
-            'address': property_info['address'],
+            'id':            str(property_info.get('id', '')),
+            'postcode':      postcode or '',
+            'address':       property_info['address'],
             'property_type': property_type,
-            'bedrooms': bedrooms,
-            'sold_date': property_info['sold_date'],
-            'sold_price': sold_price,
-            'link': property_info.get('link', '')
+            'bedrooms':      bedrooms,
+            'sold_date':     property_info['sold_date'],
+            'sold_price':    sold_price,
+            'link':          property_info.get('link', '')
         }
-        
-    except (AttributeError, TypeError, KeyError, IndexError) as e:
+
+    except (AttributeError, TypeError, KeyError, IndexError, ValueError):
         return None
 
 
